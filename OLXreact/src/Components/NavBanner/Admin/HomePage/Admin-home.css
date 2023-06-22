@@ -1,0 +1,54 @@
+.admin-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+h3{
+    margin: 0;
+}
+.main-body{
+    display: flex;
+    justify-content: center;
+}
+.modal-def .modal-body{
+    min-height:  auto !important;
+    margin-top: 1rem;
+}
+.modal-def .modal-header{
+    position: static;
+    border-bottom: .2px solid black;
+}
+.form-btn1,.form-btn2{
+    font-size: initial;
+}
+.modal-footer{
+    display: block;
+}
+.modal-def .form-btn2{
+    align-self: flex-end;
+}
+.admin-edit input{
+    width: 90%;
+    padding: .4rem;
+}
+.admin-edit{
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: .3rem;
+}
+.prof{
+    align-self: center !important;
+    margin-bottom: .3rem;
+    margin-top: .3rem;
+}
+table{
+    min-width: 518px;
+}
+.table-div{
+    overflow-x: auto;
+}
+.search{
+    justify-content: center;
+}

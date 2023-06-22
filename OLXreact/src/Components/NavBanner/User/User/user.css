@@ -1,0 +1,231 @@
+.parent{
+    padding: 2.5rem;
+    max-width: 1160px;
+}
+.form-el{
+    border: 1px solid rgba(14, 4, 5, 0.2);
+    border-radius: 4px;
+    padding: .8rem;
+}
+.form-t1{
+    font-size: medium;
+    font-weight: 600;
+}
+.border-nobottom{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.border-noup{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.parent input{
+   padding: .5rem;
+   font-size: medium;
+   width: 45%;
+   border-radius: 3px;
+   border: .5px solid black;
+}
+.parent form{
+    display: flex;
+    flex-direction: column;
+}
+
+.mybtn{
+    text-align: center;
+    padding: .4rem .7rem;
+    font-weight: 600;
+    font-size: larger;
+    background-color: rgb(6, 35, 6);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    cursor: pointer;
+    border: 1px solid black !important;
+    border-radius: 1.5px;
+    margin-left: .5rem;
+}
+.mybtn:hover {
+    background-color: white;
+    color: black;
+}
+.m-0{
+    margin: 0;
+}
+.form-btn2{
+    float: right;
+    text-align: center;
+    padding: .4rem .7rem;
+    font-weight: 600;
+    font-size: larger;
+    background-color: rgb(6, 35, 6);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    cursor: pointer;
+    border: 1px solid black !important;
+    border-radius: 1.5px;
+}
+.form-btn2:hover{
+    background-color: white;
+    color: black;
+}
+.extra-p{
+    padding: 1rem 3rem;
+}
+
+.form-btn1{
+    text-align: center;
+    padding: .4rem;
+    font-weight: 500;
+    font-size: larger;
+    border: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    border-bottom: 2px solid black;
+    cursor: pointer;
+    background-color: white;
+}
+.form-btn1:hover{
+    border-bottom: 2px solid white;
+}
+
+.main-body{
+    padding: 1rem;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.main-body > div{
+    min-width:50% ;
+}
+.category-selection-post-ad-container{
+    display: flex;
+    row-gap: .8rem;
+    column-gap: .7rem;
+    margin-left: .7rem;
+}
+
+.category-selection-post-ad{
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: x-large;
+    font-weight: 500;
+    align-items: center;
+    padding: .4rem;
+    border-radius: 5px;
+    border: .2px solid black;
+    width: 40%;
+    cursor: pointer;
+}
+@media (max-width: 768px){
+    .category-selection-post-ad{
+        width: 100% !important;
+    }
+}
+
+.category-selection-post-ad > p{
+    margin: 0;
+}.category-selection-post-ad svg{
+    margin-left: auto !important;
+}
+.category-selection-post-ad:hover{
+    transform: scale(.990);
+}
+
+.my-form-label{
+    color: rgb(83 181 148);
+    margin: .1rem;
+}
+.price-input{
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    border-radius: 3.5px;
+    border: 1px solid rgba(14, 4, 5, 0.2);
+}
+.price-input > p{
+    background-color: rgba(14, 4, 5, 0.069);
+    font-size: medium;
+    font-weight: 300;
+    justify-self: start;
+    margin: 0;
+    padding: .4rem .8rem;
+    border-right: .1px solid rgba(14, 4, 5, 0.2);
+}
+.price-input > input{
+    padding: .4rem;
+    border: none;
+    font-size: larger;
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: 400;
+}
+
+.has-decor{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.has-decor:hover{
+    text-decoration: none;
+}
+
+.transform-category{
+    transform: translateY(-284px);
+}
+
+.images-container{
+    display: flex;
+    row-gap: .25rem;
+    column-gap: .25rem;
+    margin: .2rem;
+    border: .3px solid gray;
+    width: fit-content;
+    max-width: 100%;
+}
+.images-container svg{
+    width: 100px;
+    height: 100px;
+}
+
+.my-form-input{
+    width: 300px;
+    max-width: 95%;
+    padding: .35rem;
+    font-size: medium;
+    font-weight: 500;
+    border-radius: 3px;
+    border: .1px black solid;
+}
+
+.no-m{
+    margin: 0px !important;
+}
+.a-center{
+    align-items: center;
+}
+.j-center{
+    justify-content: center;
+}
+
+.f-inherit {
+    font-size: inherit !important;
+}
+.f-small{
+    font-size: small !important;
+}
+.f-coloumn{
+    flex-direction: column;
+}
+.link{
+    text-decoration: none;
+    color: gray;
+    cursor: pointer;
+}
+.link:hover{
+    text-decoration: underline;
+}
+.bread-div{
+    margin-left: 4rem;
+}
+.padding-no{
+    padding: .3rem .5rem;
+    font-size: medium;
+    min-height: fit-content !important;
+}

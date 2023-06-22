@@ -1,0 +1,45 @@
+.details-corousel{
+    width: 100%;
+}
+.details-corousel img{
+    object-fit: contain;
+    background-color: black;
+    aspect-ratio: 16/9;
+}
+
+.border1{
+    border: 2px solid rgba(14, 4, 5, .2);
+}
+.detail-container1{
+    padding: .4rem .8rem;
+    width: 100%;
+    align-items: center;
+}
+.detail-container1 svg{
+    margin-left: auto;
+}
+.fw-700{
+    font-weight: 700;
+}
+.f-inherit{
+    font-size: inherit;
+}
+.date-ad{
+    margin-left: auto;
+}
+.a-center{
+    align-items: center;
+}
+
+.txt1{
+    margin-bottom: .2rem;
+    display: flex;
+    color: #406367 !important;
+}
+
+
+.border-line{
+    border-top: 1px solid rgba(14, 4, 5, .2);
+    width: 98%;
+    margin: 1rem .5rem;
+}

@@ -1,0 +1,50 @@
+#root {
+  margin: 0 auto;
+}
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  background-color: #ffffff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+
+}
+
+/* loading animation */
+
+.loading {
+  position: absolute;
+  top: 30%;
+  left: 45%;
+  border-radius: 100%;
+  padding: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-left-color: #FFF;
+  border-top-color: #FFF;
+  animation: spin .8s infinite linear, grow .3s forwards ease-out;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes grow {
+  to {
+    width: 14px;
+    height: 14px;
+    margin-top: -8px;
+    right: 13px;
+  }
+}

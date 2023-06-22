@@ -1,0 +1,54 @@
+.sidebar-container{
+    padding-top: 1rem;
+    padding-left: 3.5rem;
+}
+.brand-img{
+    background-color: white;
+    padding: .8rem .3rem;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    margin: .3rem;
+}
+.brand-checkbox > input{
+    width: 1.3rem;
+    margin-right: .3rem;
+}
+.brand-checkbox > label{
+    font-size: medium;
+    font-weight: 500;
+    cursor: pointer;
+}
+.brand-checkbox > label:hover .brand-checkbox > input{
+    outline: black;
+}
+.others-holder{
+    margin-top: .6rem;
+    overflow-y: scroll;
+    max-height: 105px;
+}
+.f-medium{
+    font-size:  medium !important;
+}
+.years-txt > p{
+    font-size: medium !important;
+}
+.years-txt{
+    border-radius: 6px;
+    box-sizing: border-box;
+    padding: .3rem .7rem;
+    margin: .3rem 0;
+}
+.others-holder2{
+    margin-top: .6rem;
+}
+.bottom-border{
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgb(14 4 5 / 20%);
+}
+.rm-filter{
+    cursor: pointer;
+}
+.rm-filter:hover{
+    text-decoration: underline;
+}

@@ -1,0 +1,14 @@
+.category-container{
+    padding: 1rem;
+    max-width: 100vw;
+}
+.category-container > .title{
+    padding-left: 3.5rem;
+}
+.sort-txt{
+    font-weight: 500;
+}
+.drop-btn{
+    border: none;
+    background-color: inherit;
+}

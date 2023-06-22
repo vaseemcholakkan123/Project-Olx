@@ -1,0 +1,102 @@
+.typeContain{
+    max-width: 52%;
+}
+.type{
+    border: .5px solid lightgray;
+    cursor:pointer;
+    padding: .2rem .4rem;
+    width: fit-content;
+    border-radius: 4px;
+
+}
+.active-item{
+    border: .5px solid black;
+    background-color: #c8f8f6;
+}
+.type p{
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+}
+
+.type:hover{
+    background-color: #c8f8f6;
+}
+.extra-p p{
+    padding: .3rem .4rem;
+}
+
+.select-form{
+    padding: .3rem;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: medium;
+}
+
+.select-form:focus{
+    border: aquamarine solid 2px;
+}
+.p-percent{
+    background-color: rgba(14, 4, 5, 0.069);
+    font-size: larger;
+    font-weight: 300;
+    margin: 0;
+    padding: .4rem .8rem;
+    border-right: .1px solid rgba(14, 4, 5, 0.2);
+}
+.battery-health{
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    border: 1px solid rgba(14, 4, 5, 0.2);
+    margin-top: .4rem;
+    margin-left: 1rem;
+}
+.battery-health > input{
+    text-align: center;
+    width: 50px;
+    border: none;
+}
+.fuel > input{
+    width: 100px;
+}
+
+p{
+    font-size: large !important;
+}
+
+.form-image-container{
+    position: relative;
+
+}
+.form-image-container > svg{
+    width: 25px !important;
+    margin-right: 5px;
+    right: 0;
+    margin-top: 5px;
+    height: 25px !important;
+    position: absolute;
+}
+textarea{
+    width: auto !important;
+}
+.nopadding-formel-md{
+    padding: .8rem;
+}
+
+@media (max-width:430px) {
+    .nopadding-formel-md{
+        padding:  .8rem 0 !important;
+    }
+}
+
+.post-btn{
+    min-width: 84px;
+    min-height: 39px;
+    position: relative;
+}
+.loading2{
+    left: 34% !important;
+    top: 32% !important;
+    padding: .8rem !important;
+}
