@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import olxAxios from '../../../../../Config/AxiosConfig'
 import { ad } from '../../Home-User/HomePage'
 import CatorBread from '../../NavItems/CatorBread'
-import { BASE_IMAGE_URL } from '../../../../../Config/ConstAPI'
+import { handleWishlist, handleWishlistDelete } from '../../Helper'
 
 
 
@@ -16,6 +16,7 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
     const [userdata,setUserData] = useState({username:null,id:null,email:null,profile:null,date_joined:''})
     const [userPosts,setUserPosts] = useState<ad[]>([])
     const url = useNavigate()
+    const [active_content,setActiveContent] = useState('ads')
 
     useEffect(()=>{
         let user_id;
@@ -23,7 +24,6 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
             user_id = userData.user_id 
         }else user_id = RouterState.state.user_id
 
-        
 
         olxAxios.get(`get-user/${user_id}`).then(res=>{
             if (!res.data.profile) res.data.profile = 'https://statics.olx.in/external/base/img/avatar_1.png'
@@ -33,16 +33,26 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
             console.log(err);
             
         })
-        olxAxios.get(`get-user-ads/${user_id}`).then(res=>{
-            let lis: Array<ad> = [...res.data.Cars , ...res.data.Scooter , ...res.data.Mobile , ...res.data.Accessory , ...res.data.Property]
-            setUserPosts(lis)
+        let content_url = active_content == 'wishlist' ?`get-user-${active_content}` : `get-user-${active_content}/${user_id}`
+        olxAxios.get(content_url).then(res=>{
+
+            if (res.data.Ads){
+                let lis: Array<ad> = [...res.data.Ads]
+                setUserPosts(lis)
+            }   
+            else{
+                let lis: Array<ad> = [...res.data.Cars , ...res.data.Scooter , ...res.data.Mobile , ...res.data.Accessory , ...res.data.Property]
+                setUserPosts(lis)
+
+            }        
+
             
         }).catch(err=>{
-            console.log(err);
+            console.log(err.response.data);
             
         })
 
-    },[])
+    },[active_content])
 
   return (
     <>
@@ -67,12 +77,6 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
                 <p className="f-small mt-2">User not verified</p>
             }
 
-            <button className="w-100 mt-2 login-form-btn keep-color">
-                
-                <svg className='me-2' fill='#fff' width="22px" height="22px" viewBox="0 0 1024 1024" data-aut-id="icon" fillRule="evenodd"><path className="rui-7jwXk rui-B79vz" d="M768 853.333C720.896 853.333 682.666 815.104 682.666 768C682.666 720.896 720.896 682.667 768 682.667C815.104 682.667 853.333 720.896 853.333 768C853.333 815.104 815.104 853.333 768 853.333M256 597.333C208.896 597.333 170.666 559.104 170.666 512C170.666 464.896 208.896 426.667 256 426.667C303.104 426.667 341.333 464.896 341.333 512C341.333 559.104 303.104 597.333 256 597.333M768 170.667C815.104 170.667 853.333 208.896 853.333 256C853.333 303.104 815.104 341.333 768 341.333C720.896 341.333 682.666 303.104 682.666 256C682.666 208.896 720.896 170.667 768 170.667M768 597.333C715.562 597.333 669.312 621.44 637.994 658.645L424.32 535.253C425.386 527.616 426.666 519.979 426.666 512C426.666 507.221 425.642 502.741 425.258 498.091L643.541 372.053C674.645 405.461 718.72 426.667 768 426.667C862.25 426.667 938.666 350.251 938.666 256C938.666 161.749 862.25 85.3333 768 85.3333C673.749 85.3333 597.333 161.749 597.333 256C597.333 270.208 599.594 283.819 602.837 297.003L396.97 415.915C366.208 370.901 314.581 341.333 256 341.333C161.749 341.333 85.333 417.749 85.333 512C85.333 606.251 161.749 682.667 256 682.667C311.466 682.667 360.234 655.787 391.424 614.827L600.618 735.573C598.57 746.112 597.333 756.907 597.333 768C597.333 862.251 673.749 938.667 768 938.667C862.25 938.667 938.666 862.251 938.666 768C938.666 673.749 862.25 597.333 768 597.333"></path></svg>
-
-                Share Profile
-            </button>
 
             {
                 userdata.id != userData.user_id ? 
@@ -84,7 +88,8 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
                 </button>
 
                 :
-                null
+            <button onClick={()=>{url('/edit-profile')}} className='login-form-btn keep-color login-form-btn popper-btn'>Edit Profile</button>
+                
             }
 
         </div>
@@ -92,21 +97,55 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
         <div className="user-posts-holder col-9">
             <div className="ads-container row gy-3 gx-2">
                 {
+                    userData.user_id ?
+                        <div className="d-flex text-secondary c-pointer">
+                            <p onClick={e=>{setActiveContent('ads')}} className={active_content == 'ads' ? 'active-content ms-2' : 'ms-2'}>My Ads</p>
+                            <p onClick={(e=>{setActiveContent('wishlist')})} className={active_content == 'wishlist' ? 'active-content ms-2' : 'ms-2'}>Wishlist</p>
+                        </div>
+                    :
+                    null
+                }
+                {
                 userPosts.map(item=>{
                     return(
-                        <div key={item.title} className="Ad-card col-md-4 col-lg-3" onClick={()=>{ url(`/details/${item.title}`); props.ShowDetails({Ad_category:item.category , Ad_id : item.id}) }}>
+                        <div key={item.title} className="Ad-card col-md-4 col-lg-3" >
                             <div className="Ad-image-container">
 
-                                <button type="button" className="wish-icon rui-3a8k1 _29mJd favoriteOff" role="button" tabIndex={0} data-aut-id="btnFav" title="Favourite">
-                                    <svg width="24px" height="24px" viewBox="0 0 1024 1024" data-aut-id="icon" className="" fillRule="evenodd"><path className="rui-w4DG7" d="M830.798 448.659l-318.798 389.915-317.828-388.693c-20.461-27.171-31.263-59.345-31.263-93.033 0-85.566 69.605-155.152 155.152-155.152 72.126 0 132.752 49.552 150.051 116.364h87.777c17.299-66.812 77.905-116.364 150.051-116.364 85.547 0 155.152 69.585 155.152 155.152 0 33.687-10.802 65.862-30.293 91.811zM705.939 124.121c-80.853 0-152.204 41.425-193.939 104.204-41.736-62.778-113.086-104.204-193.939-104.204-128.33 0-232.727 104.378-232.727 232.727 0 50.657 16.194 98.948 47.806 140.897l328.766 402.133h100.189l329.716-403.355c30.662-40.727 46.856-89.018 46.856-139.675 0-128.349-104.398-232.727-232.727-232.727z"></path>
-                                    </svg>
-                                </button>
+                                {
+                                    
+                                    userData.user_id == item.posted_user?.id ?
+                                    
+                                    <button type="button" onClick={e=>url('/Post-Ad',{state:{'editAd' : item.id,'category':item.category}})} className="wish-icon rui-3a8k1 _29mJd favoriteOff" role="button" tabIndex={0} data-aut-id="btnFav" title="Favourite">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                            </svg>
+                                    </button>
+                                        
+                                    :
 
+                                    
+                                    <button onClick={e=>{
+                                        handleWishlistDelete(item.id,item.category).then(r=>{
+                                          setUserPosts(userPosts.filter(ad=>{
+                                              if (ad.id != item.id) return ad
+                                          }))
+                                        })
+                                        
+                                        }} type="button" className="wish-icon rui-3a8k1 _29mJd favoriteOff" role="button" tabIndex={0} data-aut-id="btnFav" title="Favourite">
 
-                                <img src={BASE_IMAGE_URL+item.related_images[0].image} width={400} height={300} alt="asdsa  " />
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                                            <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                                          </svg>
+                                    </button>
+                                      
+
+                                }
+
+                                <img onClick={()=>{ url(`/details/${item.title}`); props.ShowDetails({Ad_category:item.category , Ad_id : item.id}) }} src={item.related_images[0].image} width={400} height={300} alt="asdsa  " />
 
                             </div>
-                            <div className="Ad-text-container">
+                            <div onClick={()=>{ url(`/details/${item.title}`); props.ShowDetails({Ad_category:item.category , Ad_id : item.id}) }} className="Ad-text-container">
                                 <p className="price-text">
                                 ₹ {item.price}
                                 </p>
