@@ -1,4 +1,6 @@
 from django.urls import path
+import django
+django.setup()
 from . import chat
 
 
