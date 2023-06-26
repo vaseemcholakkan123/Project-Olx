@@ -5,5 +5,5 @@ from . import chat
 
 
 websocket_urlpatterns = [
-    path("chat", chat.ChatUser.as_asgi()),
+    path("olx-api/chat", chat.ChatUser.as_asgi()),
 ]

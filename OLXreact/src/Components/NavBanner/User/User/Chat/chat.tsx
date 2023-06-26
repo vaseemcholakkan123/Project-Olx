@@ -78,7 +78,8 @@ export const getEndpoint = () =>{
 
     if (location.protocol == 'https') wsStart = 'wss://'
 
-    let endpoint = wsStart + '127.0.0.1:8000' + location.pathname
+    // let endpoint = wsStart + '127.0.0.1:8000' + location.pathname
+    let endpoint = wsStart + 'olx-api/' + location.pathname
     return endpoint
 }
 
