@@ -1,8 +1,11 @@
+import time
 from django.contrib.auth import get_user_model
 from channels.db import database_sync_to_async
 from channels.consumer import AsyncConsumer
 import json
 from channels.db import database_sync_to_async
+from .models import *
+from datetime import date
 
 User = get_user_model()
 
@@ -24,11 +27,6 @@ class ChatUser(AsyncConsumer):
         
         await self.send({"type": "websocket.accept"})
 
-
-
-
-
-
     async def websocket_receive(self, event):
 
         dmp = json.loads(event['text'])
@@ -40,16 +38,21 @@ class ChatUser(AsyncConsumer):
 
         sender = await self.get_user(sender)
         reciever = await self.get_user(reciever)
+        thread = await self.get_thread(sender,reciever)
 
         if not message or not sender or not reciever:
             await self.send({"type": "websocket.send","text" : 'User fetch error'})
 
         reciever_chatroom = f'user_chatroom_{dmp.get("reciever")}'
+        
+        await self.save_message(thread,sender,message)
 
+        t = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
         response = {
             'message':message,
             'sent_by':self.scope['user'].id,
-            'sent_by_name':self.scope['user'].username
+            'sent_by_name':self.scope['user'].username,
+            'timestamp': t,
         }
 
         await self.channel_layer.group_send(
@@ -72,7 +75,6 @@ class ChatUser(AsyncConsumer):
 
 
     async def chat_message(self,event):
-        print('messssss',event)
         await self.send({'type':'websocket.send','text':event['text']})
 
 
@@ -93,3 +95,21 @@ class ChatUser(AsyncConsumer):
             return usr.first()
         else:
             return None
+        
+    @database_sync_to_async
+    def get_thread(self,first_person,second_person):
+        thread = ChatThread.objects.filter(
+            Q(first_person=first_person, second_person=second_person) | 
+            Q(first_person=second_person, second_person=first_person)
+            
+        )
+        if thread.exists():
+            thread = thread.first()
+        else:
+            thread = ChatThread.objects.create(first_person=first_person,second_person=second_person)
+
+        return thread
+    
+    @database_sync_to_async
+    def save_message(self,thread,user,message):
+        ChatMessage.objects.create(thread=thread,user=user,message=message)

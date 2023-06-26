@@ -2,6 +2,7 @@ from rest_framework import generics
 from .serializers import *
 from .models import OlxUser, CarsAd
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,8 +11,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from .CustomMixins import AdMixin
- 
-
+from services.models import ChatThread
+from services.serializers import *
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.exceptions import TokenError
 # createmodelmixin explicilty changed make it with mro
 
 
@@ -187,11 +190,11 @@ class ListUserAds(APIView):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST,data={'message':'user id not provided'})
 
-        Cars = CarsAdSerializer(CarsAd.objects.filter(posted_user__id=req_user_id), many=True).data
-        Accessory = AccessoryAdSerializer(AccessoryAd.objects.filter(posted_user__id=req_user_id), many=True).data
-        Mobile = MobileAdSerializer(MobileAd.objects.filter(posted_user__id=req_user_id), many=True).data
-        Property = PropertyAdSerializer(PropertyAd.objects.filter(posted_user__id=req_user_id), many=True).data
-        Scooter = ScooterAdSerializer(ScooterAd.objects.filter(posted_user__id=req_user_id), many=True).data
+        Cars = CarsAdSerializer(CarsAd.objects.filter(posted_user__id=req_user_id), many=True,context={'request':request}).data
+        Accessory = AccessoryAdSerializer(AccessoryAd.objects.filter(posted_user__id=req_user_id), many=True,context={'request':request}).data
+        Mobile = MobileAdSerializer(MobileAd.objects.filter(posted_user__id=req_user_id), many=True,context={'request':request}).data
+        Property = PropertyAdSerializer(PropertyAd.objects.filter(posted_user__id=req_user_id), many=True,context={'request':request}).data
+        Scooter = ScooterAdSerializer(ScooterAd.objects.filter(posted_user__id=req_user_id), many=True,context={'request':request}).data
 
         return Response(
             status=status.HTTP_200_OK,
@@ -218,11 +221,11 @@ class ListAds(APIView):
         except:
             query = '' 
 
-        Cars = CarsAdSerializer(CarsAd.objects.filter(ad_location=location,title__icontains=query), many=True).data
-        Accessory = AccessoryAdSerializer(AccessoryAd.objects.filter(ad_location=location,title__icontains=query), many=True).data
-        Mobile = MobileAdSerializer(MobileAd.objects.filter(ad_location=location,title__icontains=query), many=True).data
-        Property = PropertyAdSerializer(PropertyAd.objects.filter(ad_location=location,title__icontains=query), many=True).data
-        Scooter = ScooterAdSerializer(ScooterAd.objects.filter(ad_location=location,title__icontains=query), many=True).data
+        Cars = CarsAdSerializer(CarsAd.objects.filter(ad_location=location,title__icontains=query), many=True,context={'request':request}).data
+        Accessory = AccessoryAdSerializer(AccessoryAd.objects.filter(ad_location=location,title__icontains=query), many=True,context={'request':request}).data
+        Mobile = MobileAdSerializer(MobileAd.objects.filter(ad_location=location,title__icontains=query), many=True,context={'request':request}).data
+        Property = PropertyAdSerializer(PropertyAd.objects.filter(ad_location=location,title__icontains=query), many=True,context={'request':request}).data
+        Scooter = ScooterAdSerializer(ScooterAd.objects.filter(ad_location=location,title__icontains=query), many=True,context={'request':request}).data
 
         return Response(
             status=status.HTTP_200_OK,
@@ -251,6 +254,7 @@ class ScooterAds(AdMixin,viewsets.ModelViewSet):
 
 
 
+
 class MobileAds(AdMixin,viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     queryset = MobileAd.objects.all()
@@ -272,12 +276,126 @@ class PropertyAds(AdMixin,viewsets.ModelViewSet):
     queryset = PropertyAd.objects.all()
     serializer_class = PropertyAdSerializer
 
-class ChangeProfile(APIView):
-    permission_classes = [AllowAny]
+    
 
+class ChangeProfile(APIView):
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
-        profile = request.Files
-        print('called===============')
-        print(profile)
+        profile = request.data.get('profile')
+        if not profile:
+            return Response(status=status.HTTP_400_BAD_REQUEST,data='No embedded profile')
+        request.user.profile.save(profile.name, profile, save=True)
+        user_data = {
+                    "username": request.user.username,
+                    "user_id": request.user.id,
+                    "profile": "http://127.0.0.1:8000" + request.user.profile.url,
+                    "email": request.user.email,
+                }
+        return Response(status=status.HTTP_200_OK,data={'user':user_data})
+    
+class AddToWishlist(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request,*args,**kwargs):
+        category = kwargs['category']
+        id = kwargs['id']
+
+        if not id or not category:
+            return Response(status=status.HTTP_400_BAD_REQUEST,data={'message':'No data for adding item to wishlist'})
+
+        if category == 'Car':
+            item = CarsAd.objects.get(id=id)
+        if category == 'Mobile':
+            item = MobileAd.objects.get(id=id)
+        if category == 'Accessory':
+            item = AccessoryAd.objects.get(id=id)
+        if category == 'Scooter':
+            item = ScooterAd.objects.get(id=id)
+        if category == 'Properties':
+            item = PropertyAd.objects.get(id=id)
+
+        if not item:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        WishList.objects.create(user=request.user,Ad=item)
+
         return Response(status=status.HTTP_200_OK)
+    
+
+class UserWishlist(ListAPIView):
+    permission_classes = [IsAuthenticated]
+        
+    def get(self, request, *args, **kwargs):
+        self.queryset = WishList.objects.filter(user=request.user)
+        serializer_class = WishListSerializer(self.queryset,many=True,context={'request':request})
+        res = {'Ads':[ad['Ad'] for ad in serializer_class.data]}
+        return Response(status=status.HTTP_200_OK,data=res)
+
+
+class RemoveWishlist(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request,*args,**kwargs):
+        category = kwargs['category']
+        id = kwargs['id']
+        if not id or not category:
+            return Response(status=status.HTTP_400_BAD_REQUEST,data={'message':'No data for deleting item from wishlist'})
+
+        if category == 'Car':
+            item = CarsAd.objects.get(id=id)
+        if category == 'Mobile':
+            item = MobileAd.objects.get(id=id)
+        if category == 'Accessory':
+            item = AccessoryAd.objects.get(id=id)
+        if category == 'Scooter':
+            item = ScooterAd.objects.get(id=id)
+        if category == 'Properties':
+            item = PropertyAd.objects.get(id=id)
+
+        if not item:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        try:
+            wish_item = WishList.objects.get(user=request.user,content_type=ContentType.objects.get_for_model(item),obj_id=item.id)
+            print('done',wish_item)
+            wish_item.delete()
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST,data={'message':'Internal error'})
+
+
+        return Response(status=status.HTTP_200_OK)
+    
+
+class GetChatThreads(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+
+        self.queryset = ChatThread.objects.by_user(user=request.user)
+
+        if not self.queryset.exists():
+            return Response(status=status.HTTP_200_OK,data='empty')
+
+        serializer = ChatThreadSerializer(self.queryset,many=True)
+        return Response(status=status.HTTP_200_OK,data=serializer.data)
+    
+class GetThreadMessages(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        reciever = OlxUser.objects.get(id=kwargs['reciever'])
+
+        thread = ChatThread.objects.filter(
+            Q(first_person=request.user, second_person=reciever) | 
+            Q(first_person=reciever, second_person=request.user)
+            )
+        
+        if not thread.exists():
+            return Response(status=status.HTTP_200_OK,data='empty')
+        
+        messages = thread.first().chatmessage_thread.all()
+
+        serializer = ChatMessageSerializer(messages,many=True)
+        return Response(status=status.HTTP_200_OK,data=serializer.data)
+    

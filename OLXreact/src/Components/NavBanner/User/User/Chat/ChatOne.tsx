@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, useContext, BaseSyntheticEvent, Dispatch, 
 import './chat.css'
 import { UserMessageElement, getEndpoint, handleInvalidToken } from './chat'
 import { userContext } from '../../UserApp'
+import { NotifyServerFailure, updateTimes } from '../../Helper'
+import olxAxios from '../../../../../Config/AxiosConfig'
 
 
 type ChatOneProps = {
@@ -10,6 +12,14 @@ type ChatOneProps = {
     reciever_id:Number,
     setChatroom:Dispatch<SetStateAction<{ username : string , profile : string ,id : Number} | null>>
 
+}
+type chatmessage = {
+    message: string,
+    user: {
+        id:number,
+        username:string,
+    },
+    timestamp:string
 }
 
 function ChatOne(props:ChatOneProps) {
@@ -21,54 +31,81 @@ function ChatOne(props:ChatOneProps) {
     const [OLXSocket,setSocket] = useState<WebSocket | null>(null)
     
     useEffect(()=>{
-        const socket = new WebSocket(getEndpoint() + `?token=${localStorage.getItem('access-token')}`)
+        if(OLXSocket) OLXSocket.close()
+        
+        olxAxios.get(`get-thread-messages/${props.reciever_id}`)
+        .then(res=>{
+            if (res.data == 'empty') return
+            let lis:chatmessage[] = [...res.data]
 
-        console.log('working===============');
+            lis.map(msg=>{
+                chatBody.current?.appendChild(
+                    UserMessageElement(
+                        msg.message,
+                        current_user.userData.user_id,
+                        msg.user.id,
+                        msg.user.username,
+                        msg.timestamp,
+                        
+                        ))
+                        updateTimes()
+            })
+            
+        })
+        .catch(err=>{
+            console.log(err.response.data);
+            
+        })
+
+        const socket = new WebSocket(getEndpoint() + `?token=${localStorage.getItem('access-token')}`)
         
         socket.onopen = async event => {
-            console.log('connection open');
-            console.log('++++++++++++++++++++++++++++++++');
-            
             setSocket(socket)
         }
         
         socket.onerror = async event => {
-            console.log('--------------------------------------');
-            
-            console.log('connection error',event);
             try {
                 handleInvalidToken()
             } catch (error) {
-                throw error
+                NotifyServerFailure()
             }
             
         }
         
         socket.onmessage = async event => {
-            
             try {
                 let data = JSON.parse(event.data)
-                 chatBody.current?.appendChild(
+                if(data.sent_by != props.reciever_id && data.sent_by != localStorage.getItem('logged_user_id')) return
+                
+                chatBody.current?.appendChild(
                 UserMessageElement(
                     data.message,
                     current_user.userData.user_id,
                     data.sent_by,
-                    data.sent_by_name
+                    data.sent_by_name,
+                    data.timestamp
                     ))
-            chatBody.current ? chatBody.current.scrollTop = chatBody.current.scrollHeight : null
+                    updateTimes()
+                chatBody.current ? chatBody.current.scrollTop = chatBody.current.scrollHeight : null
             } catch (error) {
                 return
             }
-   
-           
               
         }
+        const timerupdate = setInterval(() => {
+            updateTimes()
+        }, 1000);
         
-    },[])
+        return (()=>{
+            clearInterval(timerupdate)
+            chatBody.current? chatBody.current.innerHTML = '' : ''
+        })
+        
+    },[props.reciever_id])
     
     function SendMessage(message:string){
         if (message =='') return
-        
+
         OLXSocket?.send(JSON.stringify({
             'message':message,
             'sent_by':current_user.userData.user_id,
@@ -90,7 +127,7 @@ function ChatOne(props:ChatOneProps) {
 
     <div className='olx-messenger'>
         <header className='chat-one-header bg-light border1-bottom'> 
-            <svg onClick={e=>props.setChatroom(null)} xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-arrow-left chat-one-back d-none" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path></svg>
+            <svg onClick={e=>props.setChatroom(null)} xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-arrow-left chat-one-back d-none" viewBox="0 0 16 16"><path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path></svg>
             <img src={props.profile} alt="reciever_profile" className='rounded-circle' width={50} height={50} />
             <p className="username-chat-header">{props.username}</p>
         </header>
@@ -106,7 +143,6 @@ function ChatOne(props:ChatOneProps) {
                 <p className='name'>{props.username} <span className='time'>just now</span></p>
                 <p >Halo</p>
             </div> */}
-            
 
         </div>
 

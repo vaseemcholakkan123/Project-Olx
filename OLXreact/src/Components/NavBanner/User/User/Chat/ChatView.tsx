@@ -23,14 +23,27 @@ const NotifyFailure = () => toast.warn("Login to Chat",
                     draggable: true,
                     progress: undefined,
                     theme: "light", })
+type thread = {
+    first_person : {
+        username : string,
+        id : number,
+        profile : string
+    },
+    second_person : {
+        username : string,
+        id : number,
+        profile : string
+    }
+}
 
 function ChatView(props:ChatViewProps) {
 
     const [searching,Setsearching] = useState(false)
-    const [SelectedFilter,SelectFilter] = useState('All')
+    // const [SelectedFilter,SelectFilter] = useState('All')
     const [chatroom,selectChatroom] = useState< { username : string , profile : string ,id : Number} | null>(null)
     const [chatroomlist,setChatroomList] = useState<{ username : string , profile : string , id : Number }[]>([])
     const [chatSetted,SetLocationState] = useState(false)
+    const [ThreadSearch,setThreadSearch] = useState(false)
     const { userData } = useContext(userContext)
     const url = useNavigate()
 
@@ -44,11 +57,49 @@ function ChatView(props:ChatViewProps) {
         }
 
         if (locationRouter.state && !chatSetted){
-            setChatroomList([...chatroomlist,{'username' : locationRouter.state.username , 'profile' : locationRouter.state.profile , 'id' : locationRouter.state.id}])
+            setChatroomList([{'username' : locationRouter.state.username , 'profile' : locationRouter.state.profile , 'id' : locationRouter.state.id},...chatroomlist])
             selectChatroom({'username' : locationRouter.state.username , 'profile' : locationRouter.state.profile , 'id' : locationRouter.state.id})
             SetLocationState(true)
         }
-        
+    
+
+        if (!ThreadSearch){
+            olxAxios.get('get-chat-threads').then(res=>{
+                setThreadSearch(true)
+                if (res.data == 'empty') return
+
+                let lis:thread[] = [...res.data]
+
+                setChatroomList((prevChatroomList) => {
+                    const existingIds = prevChatroomList.map((item) => item.id);
+                  
+                    const filteredData = lis.map((chat) => {
+                      if (chat.first_person.id == Number(localStorage.getItem('logged_user_id'))) {
+                        return {
+                          username: chat.second_person.username,
+                          profile: chat.second_person.profile,
+                          id: chat.second_person.id
+                        };
+                      } else {
+                        return {
+                          username: chat.first_person.username,
+                          profile: chat.first_person.profile,
+                          id: chat.first_person.id
+                        };
+                      }
+                    }).filter((item) => !existingIds.includes(item.id));
+                  
+                    return [...prevChatroomList, ...filteredData];
+                  });
+
+                
+            })
+            .catch(err=>{
+                console.log(err);
+                
+            })
+        }
+
         
     },[chatroomlist])
 
@@ -76,7 +127,7 @@ function ChatView(props:ChatViewProps) {
                 {   searching ?
 
                 <>
-                    <input type="text" onKeyUp={e=>handleSearch(e.target.value)} className='chat-search bg-light' placeholder='Search for users' />
+                    <input type="text" onKeyUp={e=>handleSearch((e.target as HTMLInputElement).value)} className='chat-search bg-light' placeholder='Search for users' />
                     <svg onClick={()=>{Setsearching(false)}} xmlns="http://www.w3.org/2000/svg" className='ms-auto bi bi-x-lg' width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
                     </svg>
@@ -93,21 +144,20 @@ function ChatView(props:ChatViewProps) {
 
             </div>
 
-            <div className='p-1 users-holder border1 border-no-top' style={{'height':'91%'}}>
-                <p className='ps-2 f-small'>Quick Filters</p>
+            <div className='p-1 users-holder border1 border-no-top o-scroll' style={{'height':'91%'}}>
+                {/* <p className='ps-2 f-small'>Quick Filters</p>
                 <div className="d-flex p-1 pb-2 ps-3 pe-3">
                     <p onClick={()=>{SelectFilter('All')}}  className={SelectedFilter == 'All' ? 'chat-filter active-item' : 'chat-filter' } >All</p>
                     <p onClick={()=>{SelectFilter('Meeting')}} className={SelectedFilter == 'Meeting' ? 'chat-filter active-item' : 'chat-filter'} >Meeting</p>
                     <p onClick={()=>{SelectFilter('Unread')}} className={SelectedFilter == 'Unread' ? 'chat-filter active-item' : 'chat-filter'} >Unread</p>
                     <p onClick={()=>{SelectFilter('Important')}} className={SelectedFilter == 'Important' ? 'chat-filter active-item' : 'chat-filter'} >Important</p>
                 </div>
+ */}
 
-                {/* <div className='w-100 h-100 d-flex a-center mt-5 f-coloumn'>
-                    <img width={125} height={125} src="https://statics.olx.in/external/base/img/emptyChat.png" alt="" />
-                    <p>No chats basis current filter selection</p>
-                </div> */}
 
                 {
+                    chatroomlist[0] ? 
+
                     chatroomlist.map(user=>{
                         if (user.id == userData.user_id) return
                         return(
@@ -120,6 +170,11 @@ function ChatView(props:ChatViewProps) {
                             </div>
                         )
                     })
+                    :
+                    <div className='w-100 h-100 d-flex a-center mt-5 f-coloumn'>
+                        <img width={125} height={125} src="https://statics.olx.in/external/base/img/emptyChat.png" alt="" />
+                        <p>No chats Found,Chat now by searching one user!</p>
+                    </div>
                 }
 
             </div>

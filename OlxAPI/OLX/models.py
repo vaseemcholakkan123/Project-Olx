@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 CATEGORY = (
     ("Mobile", "Mobile"),
@@ -127,4 +129,7 @@ class CarsAd(AdBase):
 
 
 class WishList(models.Model):
-    item = models.ForeignKey
+    user = models.ForeignKey(OlxUser,on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType,on_delete=models.CASCADE)
+    obj_id = models.PositiveIntegerField()
+    Ad = GenericForeignKey('content_type','obj_id')

@@ -43,3 +43,16 @@
     width: 98%;
     margin: 1rem .5rem;
 }
+.rel-ads{
+    max-height: 640px;
+    overflow-y: scroll;
+}
+@media (max-width:1480px) {
+    .rel-ads .Ad-image-container{
+        width: 300px !important;
+    }
+    .rel-ads .Ad-text-container{
+        width: 300px !important;
+    }
+    
+}

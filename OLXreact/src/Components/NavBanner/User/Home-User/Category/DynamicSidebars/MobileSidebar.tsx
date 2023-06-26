@@ -20,7 +20,7 @@ function MobileSidebar(props:{SetFilter:Dispatch<SetStateAction<string>>}) {
                     <div className='row'>
                         <div className="others-holder2">
                             <div className="col-12 d-flex brand-checkbox mt-2">
-                                <input type="checkbox" id="iphone"  checked={active == 'Iphone' ? true : false} onChange={e=>{SetActive('Iphone');props.SetFilter('brand=Iphone')}}  />
+                                <input type="checkbox" id="iphone"  checked={active == 'Iphone' ? true : false} onChange={e=>{SetActive('Iphone');props.SetFilter('brand=iPhone')}}  />
                                 <label htmlFor="iphone">Iphone</label>
                             </div>
     

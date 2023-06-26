@@ -1,11 +1,50 @@
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Ad_Images
+from .models import Ad_Images,WishList
 from django.db.models import Q
 import datetime
+from django.contrib.auth.models import AnonymousUser
+from django.contrib.contenttypes.models import ContentType
+
 
 
 class AdMixin:
+
+    def perform_update(self, serializer):
+        photos = self.request.data.getlist("related_images[]")
+
+        if not photos:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={"message": "No image provided"},
+            )
+        if not instance.posted_user == self.request.user:
+            return Response(
+                status=status.HTTP_401_UNAUTHORIZED,
+                data={"message": "Unauthorized"},
+            )
+
+        instance = serializer.save()
+        p_rel_id = []
+        instance_photos = instance.related_images.all()
+        not_updated_photos = []
+
+        for photo in photos:
+            
+            try:
+                img = Ad_Images.objects.get(image=photo.split('/media/')[1])
+                not_updated_photos.append(img)
+                p_rel_id.append(img.id)
+            except:
+                p = Ad_Images.objects.create(image=photo)
+                p_rel_id.append(p.id)
+
+        for photo in instance_photos:
+            if photo not in not_updated_photos:
+                photo.delete()
+
+        instance.related_images.set(p_rel_id)
+        return Response(status=status.HTTP_200_OK)
 
     def perform_create(self, serializer):
         photos = self.request.data.getlist("related_images[]")
@@ -107,3 +146,20 @@ class AdMixin:
 
 
         return super().get_queryset()
+    
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        kwargs.setdefault('context', self.get_serializer_context())
+        kwargs['context'] = {'request':self.request}
+        return serializer_class(*args, **kwargs)
+    
+class WishlistserializerMixin:
+    
+    def get_is_wishlisted(self,obj):
+        user = self.context['request'].user
+        content_type = ContentType.objects.get_for_model(obj)
+
+        if isinstance(user,AnonymousUser):
+            return False
+        
+        return WishList.objects.filter(user=user,content_type=content_type,obj_id=obj.id).exists()

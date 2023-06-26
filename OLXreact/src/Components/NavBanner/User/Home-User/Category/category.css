@@ -12,3 +12,28 @@
     border: none;
     background-color: inherit;
 }
+@media (max-width:992px) {
+    .dynamic-filter{
+        display: none !important;
+    }
+    .title{
+        padding-left: 1rem !important;
+    }
+    .filter2{
+        display: block !important;
+    }
+}
+.filter2{
+    display: none;
+    cursor: pointer;
+}
+.filter2:hover{
+    text-decoration: underline;
+}
+.offcanvas{
+    --bs-offcanvas-height: 75vh !important;
+    overflow-y: scroll;
+}
+.offcanvas{
+    text-decoration: none !important;
+}

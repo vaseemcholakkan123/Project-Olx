@@ -1,4 +1,4 @@
-import React, { useState,Dispatch,SetStateAction,useContext, useRef } from 'react'
+import { useState,Dispatch,SetStateAction,useContext, useRef } from 'react'
 import { userContext } from '../../UserApp';
 import '../Nav-Cat.css'
 import LoginPopper from './LoginPopper';
@@ -35,7 +35,7 @@ function Navbar(props:NavProps) {
         <div className="d-flex w-100 contain-nav">
             <div id="searchbar" onClick={()=>{isOpened(!navOpened)}}>
 
-            <svg width="25" height="25" viewBox="0 0 1024 1024" data-aut-id="icon" className="" fillRule="evenodd"><path className="rui-4K4Y7" d="M512 85.333c211.755 0 384 172.267 384 384 0 200.576-214.805 392.341-312.661 469.333v0h-142.656c-97.856-76.992-312.683-268.757-312.683-469.333 0-211.733 172.267-384 384-384zM512 170.667c-164.672 0-298.667 133.973-298.667 298.667 0 160.021 196.885 340.523 298.453 416.597 74.816-56.725 298.88-241.323 298.88-416.597 0-164.693-133.973-298.667-298.667-298.667zM512.006 298.66c94.101 0 170.667 76.565 170.667 170.667s-76.565 170.667-170.667 170.667c-94.101 0-170.667-76.565-170.667-170.667s76.565-170.667 170.667-170.667zM512.006 383.994c-47.061 0-85.333 38.272-85.333 85.333s38.272 85.333 85.333 85.333c47.061 0 85.333-38.272 85.333-85.333s-38.272-85.333-85.333-85.333z">
+            <svg width="25" height="25" viewBox="0 0 1024 1024" data-aut-id="icon" fillRule="evenodd"><path className="rui-4K4Y7" d="M512 85.333c211.755 0 384 172.267 384 384 0 200.576-214.805 392.341-312.661 469.333v0h-142.656c-97.856-76.992-312.683-268.757-312.683-469.333 0-211.733 172.267-384 384-384zM512 170.667c-164.672 0-298.667 133.973-298.667 298.667 0 160.021 196.885 340.523 298.453 416.597 74.816-56.725 298.88-241.323 298.88-416.597 0-164.693-133.973-298.667-298.667-298.667zM512.006 298.66c94.101 0 170.667 76.565 170.667 170.667s-76.565 170.667-170.667 170.667c-94.101 0-170.667-76.565-170.667-170.667s76.565-170.667 170.667-170.667zM512.006 383.994c-47.061 0-85.333 38.272-85.333 85.333s38.272 85.333 85.333 85.333c47.061 0 85.333-38.272 85.333-85.333s-38.272-85.333-85.333-85.333z">
                 </path>
             </svg>
 
@@ -68,7 +68,7 @@ function Navbar(props:NavProps) {
 
             
 
-            <div id="searchbar2">
+            <div id="searchbar2" className='hide-lg'>
                 <input type="text" ref={searchinp} placeholder='Find Cars, Mobile Phones and more...' />
 
                 <div className="search-icon-div" onClick={e=>{url('/');handleSearch();}}>
@@ -81,21 +81,21 @@ function Navbar(props:NavProps) {
 
             </div>
 
-            <p id='lang-text'>ENGLISH</p>
+            <p id='lang-text' className='hide-lg'>ENGLISH</p>
             
             {
                 
-                userData.username == null ? 
+                !localStorage.getItem('logged_user') ? 
                 
                 <LoginPopper/>
 
                 :
                 <>
-                    <Link className='m-0 me-2 login-text' to={'/chat'}>
+                    <Link className='m-0 me-2 login-text hide-lg' to={'/chat'}>
                         <svg width="24px" className='chat-ico' height="24px" viewBox="0 0 1024 1024" data-aut-id="icon" fillRule="evenodd"><path className="rui-w4DG7" d="M469.333 171.119c-164.693 0-298.667 134.684-298.667 300.25v359.529l108.907-54.753 19.093-4.525h256c164.693 0 298.667-134.684 298.667-300.25s-133.973-300.25-298.667-300.25h-85.333zM147.093 938.667l-61.76-38.368v-428.929c0-212.856 172.267-386.036 384-386.036h85.333c211.733 0 384 173.18 384 386.036s-172.267 386.036-384 386.036h-245.931l-161.643 81.261z"></path></svg>
                     </Link>
 
-                    <Link className='m-0 me-1 login-text' to={'/Post-Ad'}>
+                    <Link className='m-0 me-1 login-text hide-lg' to={'/Post-Ad'}>
                         Sell
                     </Link>
                     <UserOnNav />

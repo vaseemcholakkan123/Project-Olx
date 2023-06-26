@@ -6,6 +6,7 @@ import olxAxios from '../../../../../Config/AxiosConfig'
 import { ad } from '../../Home-User/HomePage'
 import CatorBread from '../../NavItems/CatorBread'
 import { handleWishlist, handleWishlistDelete } from '../../Helper'
+import NoData from '../../NoData'
 
 
 
@@ -58,8 +59,8 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
     <>
     <CatorBread noBanner={true} />
     <div className='profile-container row'>
-        <div className="user-holder col-3">
-            <img className='rounded-circle mb-2' src={userdata.profile ? userdata.profile : 'https://statics.olx.in/external/base/img/avatar_1.png'} width={100} height={100} alt="" />
+        <div className="user-holder col-12 col-md-3">
+            <img className='rounded-circle mb-2 ms-0' src={userdata.profile ? userdata.profile : 'https://statics.olx.in/external/base/img/avatar_1.png'} width={90} height={90} alt="" />
             <h4>{userdata.username}</h4>
 
             <div className="d-flex a-center">
@@ -80,12 +81,13 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
 
             {
                 userdata.id != userData.user_id ? 
-                <button className="w-100 mt-2 login-form-btn btn-2">
+                // <button className="w-100 mt-2 login-form-btn btn-2">
                 
-                    <svg width="22px" height="22px" viewBox="0 0 1024 1024" data-aut-id="icon" className="me-2" fillRule="evenodd"><path className="rui-lquEm rui-B79vz" d="M127.979 106.667L85.333 149.334V874.686L127.979 917.354L170.647 874.686V618.679H579.681L622.349 661.347H895.448L938.666 618.679V190.187L895.448 149.334H572.343L529.675 106.667H127.979ZM170.647 192.002H494.325L536.992 234.67H853.352V576.012H657.678L615.01 533.344H170.647V192.002Z"></path></svg>
+                //     <svg width="22px" height="22px" viewBox="0 0 1024 1024" data-aut-id="icon" className="me-2" fillRule="evenodd"><path className="rui-lquEm rui-B79vz" d="M127.979 106.667L85.333 149.334V874.686L127.979 917.354L170.647 874.686V618.679H579.681L622.349 661.347H895.448L938.666 618.679V190.187L895.448 149.334H572.343L529.675 106.667H127.979ZM170.647 192.002H494.325L536.992 234.67H853.352V576.012H657.678L615.01 533.344H170.647V192.002Z"></path></svg>
     
-                    Report User
-                </button>
+                //     Report User
+                // </button>
+                null
 
                 :
             <button onClick={()=>{url('/edit-profile')}} className='login-form-btn keep-color login-form-btn popper-btn'>Edit Profile</button>
@@ -94,21 +96,23 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
 
         </div>
 
-        <div className="user-posts-holder col-9">
+        <div className="user-posts-holder col-12 col-md-9">
             <div className="ads-container row gy-3 gx-2">
                 {
-                    userData.user_id ?
+                    userData.user_id == userdata.id ?
                         <div className="d-flex text-secondary c-pointer">
                             <p onClick={e=>{setActiveContent('ads')}} className={active_content == 'ads' ? 'active-content ms-2' : 'ms-2'}>My Ads</p>
                             <p onClick={(e=>{setActiveContent('wishlist')})} className={active_content == 'wishlist' ? 'active-content ms-2' : 'ms-2'}>Wishlist</p>
                         </div>
                     :
-                    null
+                    <div className="d-flex text-secondary c-pointer">
+                            <p onClick={e=>{setActiveContent('ads')}} className={active_content == 'ads' ? 'active-content ms-2' : 'ms-2'}>Posted Ads</p>
+                    </div>
                 }
                 {
                 userPosts.map(item=>{
                     return(
-                        <div key={item.title} className="Ad-card col-md-4 col-lg-3" >
+                        <div key={item.title} className="Ad-card col-12 col-sm-6 col-lg-5 col-xl-4" >
                             <div className="Ad-image-container">
 
                                 {
@@ -124,28 +128,50 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
                                         
                                     :
 
+                                
+                                
+                                    item.is_wishlisted ?
                                     
-                                    <button onClick={e=>{
+                                        <button onClick={e=>{
                                         handleWishlistDelete(item.id,item.category).then(r=>{
-                                          setUserPosts(userPosts.filter(ad=>{
-                                              if (ad.id != item.id) return ad
-                                          }))
+                                            if (userData.user_id == userdata.id){
+                                                setUserPosts(userPosts.filter(ad=>{
+                                                    if (ad.id != item.id) return ad
+                                                }))
+                                            }else{
+                                                setUserPosts(userPosts.filter(ad=>{
+                                                    if (ad.id == item.id) ad.is_wishlisted = false
+                                                    return ad
+                                                }))
+                                            }
                                         })
                                         
                                         }} type="button" className="wish-icon rui-3a8k1 _29mJd favoriteOff" role="button" tabIndex={0} data-aut-id="btnFav" title="Favourite">
-
-                                          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22px" height="22" fill="currentColor" className="bi bi-suit-heart-fill" viewBox="0 0 16 16">
                                             <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
-                                          </svg>
-                                    </button>
+                                        </svg>
+                                        </button>
+                                        :
+                                        <button onClick={e=>{
+                                            handleWishlist(item.id,item.category).then(r=>{
+                                                setUserPosts(userPosts.filter(ad=>{
+                                                    if (ad.id == item.id) ad.is_wishlisted = true 
+                                                    return ad
+                                                }))
+                                            })
+                                            }} type="button" className="wish-icon rui-3a8k1 _29mJd favoriteOff" role="button" tabIndex={0} data-aut-id="btnFav" title="Favourite">
+                                        <svg width="24px" height="24px" viewBox="0 0 1024 1024" data-aut-id="icon" className="" fillRule="evenodd" fill='black'><path className="rui-w4DG7" d="M830.798 448.659l-318.798 389.915-317.828-388.693c-20.461-27.171-31.263-59.345-31.263-93.033 0-85.566 69.605-155.152 155.152-155.152 72.126 0 132.752 49.552 150.051 116.364h87.777c17.299-66.812 77.905-116.364 150.051-116.364 85.547 0 155.152 69.585 155.152 155.152 0 33.687-10.802 65.862-30.293 91.811zM705.939 124.121c-80.853 0-152.204 41.425-193.939 104.204-41.736-62.778-113.086-104.204-193.939-104.204-128.33 0-232.727 104.378-232.727 232.727 0 50.657 16.194 98.948 47.806 140.897l328.766 402.133h100.189l329.716-403.355c30.662-40.727 46.856-89.018 46.856-139.675 0-128.349-104.398-232.727-232.727-232.727z"></path>
+                                        </svg>
+                                        </button>
+                                    
                                       
 
                                 }
 
-                                <img onClick={()=>{ url(`/details/${item.title}`); props.ShowDetails({Ad_category:item.category , Ad_id : item.id}) }} src={item.related_images[0].image} width={400} height={300} alt="asdsa  " />
+                                <img onClick={()=>{ url(`/details/${item.title}`); props.ShowDetails({Ad_category:item.category , Ad_id : item.id}); localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} src={item.related_images[0].image} width={400} height={300} alt="asdsa  " />
 
                             </div>
-                            <div onClick={()=>{ url(`/details/${item.title}`); props.ShowDetails({Ad_category:item.category , Ad_id : item.id}) }} className="Ad-text-container">
+                            <div onClick={()=>{ url(`/details/${item.title}`); props.ShowDetails({Ad_category:item.category , Ad_id : item.id});localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} className="Ad-text-container">
                                 <p className="price-text">
                                 ₹ {item.price}
                                 </p>
@@ -156,6 +182,14 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
                             </div>
                         </div>)
                     })
+                    }
+
+                    {
+                    userPosts.length == 0 ? 
+                        <NoData />
+                    :
+                    null
+                
                     }
 
             

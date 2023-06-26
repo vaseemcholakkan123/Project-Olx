@@ -2,6 +2,11 @@
     padding-top: 1rem;
     padding-left: 3.5rem;
 }
+@media (max-width:992px) {
+    .sidebar-container{
+        padding-left: 1rem;
+    }
+}
 .brand-img{
     background-color: white;
     padding: .8rem .3rem;
@@ -50,5 +55,5 @@
     cursor: pointer;
 }
 .rm-filter:hover{
-    text-decoration: underline;
+    text-decoration: underline !important;
 }

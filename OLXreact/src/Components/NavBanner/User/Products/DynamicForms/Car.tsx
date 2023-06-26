@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './sellForm.css'
 import CommonAd from './CommonAd'
 import { form_child } from '../Validators'
+import { useLocation } from 'react-router-dom'
 
 const brands = ['Maruti Suzuki','Hyundai','Tata','Mahindra','Toyota','Honda','Audi','Bmw','Lexus','Porsche']
 const transmission_types = ['Automatic','Manual']
@@ -13,6 +14,20 @@ function Car(props:form_child) {
     const [selectedTransmissionType,setTransmissionType] = useState<string|null>(null)
     const [fuel_type,setFuelType] = useState<string|null>(null)
     const [ownerCount,setOwnerCount] = useState<number|null>(null)
+    const model_name = useRef<HTMLInputElement>(null)
+    const km_driven = useRef<HTMLInputElement>(null)
+    const RouterState = useLocation()
+
+    useEffect(()=>{
+        if(RouterState.state){
+            setFuelType(props.product_form.fuel_type ? props.product_form.fuel_type : '')
+            setOwnerCount(props.product_form.no_of_owners ? props.product_form.no_of_owners : 1)
+            setTransmissionType(props.product_form.transmission_type ? props.product_form.transmission_type : '')
+            model_name.current ? model_name.current.value = props.product_form.model_name ? props.product_form.model_name : '' : null 
+            km_driven.current ? km_driven.current.value = props.product_form.km_driven ? String(props.product_form.km_driven) : '' : null 
+            
+        }
+    })
 
   return (
     <div className='ps-2'>
@@ -37,14 +52,14 @@ function Car(props:form_child) {
         <p className="m-1 ms-3 form-error">{props.form_errors?.model_name_error ? props.form_errors.model_name_error : null }</p>
 
         <div className="m-3 mt-2">
-            <input type="text" onChange={e => {props.MaintainForm({...props.product_form,model_name:e.target.value})}} className='my-form-input' placeholder='Alto 800'/>
+            <input ref={model_name} type="text" onChange={e => {props.MaintainForm({...props.product_form,model_name:e.target.value})}} className='my-form-input' placeholder='Alto 800'/>
         </div>
 
         <p className="my-form-label mt-3">Kilometers Driven*</p>
         <p className="m-1 ms-3 form-error">{props.form_errors?.km_driven_error ? props.form_errors.km_driven_error : null }</p>
 
         <div className="battery-health fuel">
-            <input type="number" min={1} onChange={e => props.MaintainForm({...props.product_form,km_driven:Number(e.target.value)})} placeholder='50001' />
+            <input ref={km_driven} type="number" min={1} onChange={e => props.MaintainForm({...props.product_form,km_driven:Number(e.target.value)})} placeholder='50001' />
             <p className='p-percent'>Kms</p>
         </div>
 

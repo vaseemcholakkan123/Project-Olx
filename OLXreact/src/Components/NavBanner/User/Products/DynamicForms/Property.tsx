@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import './sellForm.css'
 import CommonAd from "./CommonAd"
 import { form_child } from "../Validators"
+import { useLocation } from "react-router-dom"
 
-const building_types = ['Apartments' , 'Builder Floors' , 'Farm Houses' , 'Houses & Villas']
+const   building_types = ['Apartments' , 'Builder Floors' , 'Farm Houses' , 'Houses & Villas']
 const looper = [1,2,3,4]
 
 function Property(props:form_child) {
@@ -11,7 +12,16 @@ function Property(props:form_child) {
   const [selectedBuildingType,setBuildingType] = useState<string|null>(null)
   const [BathroomCount,setBathroomCount] = useState<number|null>(null)
   const [BedroomCount,setBedroomCount] = useState<number|null>(null)
+  const RouterState = useLocation()
 
+
+  useEffect(()=>{
+    if (RouterState.state){
+        setBuildingType(props.product_form.building_type ? props.product_form.building_type : null)
+        setBedroomCount(props.product_form.bedrooms ? props.product_form.bedrooms : null)
+        setBathroomCount(props.product_form.bathrooms ? props.product_form.bathrooms : null)
+    }
+  })
 
   return (
     <div className='ps-3'>
@@ -21,7 +31,7 @@ function Property(props:form_child) {
             {
                 building_types.map(item=>{
                     return(
-                        <div className={selectedBuildingType == item ? 'type active_item' : "type"} onClick={(e)=>{setBuildingType(item);props.MaintainForm({...props.product_form,building_type:item})}}>
+                        <div key={item} className={selectedBuildingType == item ? 'type active_item' : "type"} onClick={(e)=>{setBuildingType(item);props.MaintainForm({...props.product_form,building_type:item})}}>
                             <p>{item}</p>
                         </div>
                     )
@@ -37,7 +47,7 @@ function Property(props:form_child) {
             {
                 looper.map((i)=>{
                     return(
-                        <div className={BedroomCount == i ? 'type active_item' : 'type'} onClick={()=>{setBedroomCount(i);props.MaintainForm({...props.product_form,bedrooms:i})}}>
+                        <div key={i} className={BedroomCount == i ? 'type active_item' : 'type'} onClick={()=>{setBedroomCount(i);props.MaintainForm({...props.product_form,bedrooms:i})}}>
                             <p>{i}</p>
                         </div>
                     )
@@ -58,7 +68,7 @@ function Property(props:form_child) {
             {
                 looper.map((i)=>{
                     return(
-                        <div className={BathroomCount == i ? 'type active_item' : 'type'} onClick={()=>{setBathroomCount(i);props.MaintainForm({...props.product_form,bathrooms:i})}}>
+                        <div key={i} className={BathroomCount == i ? 'type active_item' : 'type'} onClick={()=>{setBathroomCount(i);props.MaintainForm({...props.product_form,bathrooms:i})}}>
                             <p>{i}</p>
                         </div>
                     )

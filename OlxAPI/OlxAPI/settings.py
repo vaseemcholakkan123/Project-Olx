@@ -60,8 +60,6 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ],
@@ -148,17 +146,20 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    'http://10.4.2.62:5173'
+    # 'http://10.4.2.62:5173'
 ]
-CORS_ORIGIN_WHITELIST = (
-       'http://localhost:5173',
-       'http://10.4.2.62:5173/',
-)
+# CORS_ORIGIN_WHITELIST = (
+#        'http://localhost:5173',
+#        'http://10.4.2.62:5173/',
+# )
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 
-SIMPLE_JWT = {"ACCESS_TOKEN_LIFETIME": timedelta(minutes=20)}
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=20),
+    "ROTATE_REFRESH_TOKENS": True,
+    }
 
 AUTH_USER_MODEL = "OLX.OlxUser"
 

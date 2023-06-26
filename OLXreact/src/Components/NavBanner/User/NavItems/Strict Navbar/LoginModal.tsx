@@ -84,6 +84,7 @@ function LoginModal(props:login_create_modal) {
 
                                 })
                                 localStorage.setItem('logged_user',JSON.stringify(res.data.user))
+                                localStorage.setItem('logged_user_id',res.data.user.user_id)
                                 props.Logged_in(true)
                              
                             })

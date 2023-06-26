@@ -229,3 +229,19 @@
     font-size: medium;
     min-height: fit-content !important;
 }
+.profile-inputs input{
+    width: 100%;
+}
+.info2{
+    width: 45%;
+    margin-left: .7rem;
+    height: 125px;
+}
+.info2 p{
+    margin-left: .4rem;
+}
+@media (max-width:800px) {
+    .dynamic-p{
+        padding: .8rem !important;
+    }   
+}

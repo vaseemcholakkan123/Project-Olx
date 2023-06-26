@@ -40,7 +40,7 @@ class JwtAuthForAsgi(BaseMiddleware):
         try:
             UntypedToken(token)
         except (InvalidToken , TokenError) as e:
-            print(e)
+
             response = {'error': 'Invalid token'}
            
             await send({

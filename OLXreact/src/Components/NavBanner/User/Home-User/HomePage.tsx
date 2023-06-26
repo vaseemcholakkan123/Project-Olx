@@ -5,6 +5,10 @@ import olxAxios from '../../../../Config/AxiosConfig'
 import { BASE_IMAGE_URL } from '../../../../Config/ConstAPI'
 import { detailType } from '../UserApp'
 import { useNavigate } from 'react-router-dom'
+import { handleWishlist, handleWishlistDelete } from '../Helper'
+import AdCard from './AdCard'
+import NoData from '../NoData'
+
 
 
 
@@ -25,7 +29,8 @@ export interface ad  {
     brand ?: string,
     title?:string,
     id : number,
-    related_images?:[{image:string}],
+    is_wishlisted:boolean,
+    related_images:[{image:string}],
     price?:string,
     ad_location?:string,
     date_created:string,
@@ -41,6 +46,8 @@ type propshome = {
   location : string,
   query?:string|null
 }
+
+
 
 
 function HomePage(props:propshome) {
@@ -60,46 +67,71 @@ function HomePage(props:propshome) {
     })
   },[props.location,props.query])
 
-  let url = useNavigate()
 
   const [Ads,SetAdList] = useState<ad[]>([])
+
+  
 
 
   return (
     <div>
       <CatorBread />
+{/*       
+      <div className="p-2 bg-primary">
+        <p>sell</p>
+      </div> */}
+
       <div className="user-home-container">
+
         <h4>Fresh recommendations</h4>
 
-        <div className="ads-container row gy-3 gx-2">
+        <div className="ads-container row gy-4 gx-2">
             {
-              Ads.map(item=>{
-                return(<div key={item.title} className="Ad-card col-md-4 col-lg-3" onClick={()=>{ url(`/details/${item.title}`); props.ShowDetails({Ad_category:item.category , Ad_id : item.id}) }}>
-              <div className="Ad-image-container">
-
-                  <button type="button" className="wish-icon rui-3a8k1 _29mJd favoriteOff" role="button" tabIndex={0} data-aut-id="btnFav" title="Favourite">
-                    <svg width="24px" height="24px" viewBox="0 0 1024 1024" data-aut-id="icon" className="" fillRule="evenodd"><path className="rui-w4DG7" d="M830.798 448.659l-318.798 389.915-317.828-388.693c-20.461-27.171-31.263-59.345-31.263-93.033 0-85.566 69.605-155.152 155.152-155.152 72.126 0 132.752 49.552 150.051 116.364h87.777c17.299-66.812 77.905-116.364 150.051-116.364 85.547 0 155.152 69.585 155.152 155.152 0 33.687-10.802 65.862-30.293 91.811zM705.939 124.121c-80.853 0-152.204 41.425-193.939 104.204-41.736-62.778-113.086-104.204-193.939-104.204-128.33 0-232.727 104.378-232.727 232.727 0 50.657 16.194 98.948 47.806 140.897l328.766 402.133h100.189l329.716-403.355c30.662-40.727 46.856-89.018 46.856-139.675 0-128.349-104.398-232.727-232.727-232.727z"></path>
-                    </svg>
-                  </button>
-
-
-                <img src={BASE_IMAGE_URL+item.related_images[0].image} width={400} height={300} alt="asdsa  " />
-
-              </div>
-              <div className="Ad-text-container">
-                <p className="price-text">
-                  ₹ {item.price}
-                </p>
-                <p className="Ad-Text">{item.title}</p>
-                
-                <p className="Ad-text2">{item.ad_location}</p>
-                <p className="Ad-text3">{item.date_created}</p>
-              </div>
-            </div>)
+              Ads.map((item,i)=>{
+                return(<AdCard key={item.description + String(i)} Ad={item} showDetails={props.ShowDetails} />)
               })
-            }
+            }   
 
-           
+            {
+              Ads.length == 0 ? 
+                  <NoData />
+              :
+              null
+          
+              }
+
+        <div className='position-fixed d-md-none' style={{bottom:'45px'}}>
+          <div className="sell d-flex d-md-none">
+            <svg
+              width="104"
+              height="48"
+              viewBox="0 0 1603 768"
+              className="_20oLV"
+            >
+              <g>
+                <path
+                  className="_32cGm _3Vwmt"
+                  d="M434.442 16.944h718.82c202.72 0 367.057 164.337 367.057 367.058s-164.337 367.057-367.057 367.057h-718.82c-202.721 0-367.058-164.337-367.058-367.058s164.337-367.058 367.058-367.058z"
+                ></path>
+                <path
+                  className="_32cGm _3XfCS"
+                  d="M427.241 669.489c-80.917 0-158.59-25.926-218.705-73.004l-0.016-0.014c-69.113-54.119-108.754-131.557-108.754-212.474 0-41.070 9.776-80.712 29.081-117.797 25.058-48.139 64.933-89.278 115.333-118.966l-52.379-67.581c-64.73 38.122-115.955 90.98-148.159 152.845-24.842 47.745-37.441 98.726-37.441 151.499 0 104.027 50.962 203.61 139.799 273.175h0.016c77.312 60.535 177.193 93.887 281.22 93.887h299.699l25.138-40.783-25.138-40.783h-299.698z"
+                ></path>
+                <path
+                  className="_32cGm _1DrSr"
+                  d="M1318.522 38.596v0c-45.72-14.369-93.752-21.658-142.762-21.658h-748.511c-84.346 0-165.764 21.683-235.441 62.713l3.118 51.726 49.245 15.865c54.16-31.895 117.452-48.739 183.073-48.739h748.511c38.159 0 75.52 5.657 111.029 16.829v0c44.91 14.111 86.594 37.205 120.526 66.792l66.163-57.68c-43.616-38.010-97.197-67.703-154.957-85.852z"
+                ></path>
+                <path
+                  className="_32cGm HKswn"
+                  d="M1473.479 124.453l-55.855 9.91-10.307 47.76c61.844 53.929 95.92 125.617 95.92 201.88 0 25.235-3.772 50.26-11.214 74.363-38.348 124.311-168.398 211.129-316.262 211.129h-448.812l25.121 40.783-25.121 40.783h448.812c190.107 0 357.303-111.638 406.613-271.498 9.572-31.009 14.423-63.162 14.423-95.559 0-98.044-43.805-190.216-123.317-259.551z"
+                ></path>
+              </g>
+            </svg>
+            <div className="sell_btn">Sell</div>
+          </div>
+        </div>
+
+
 
         </div>
 

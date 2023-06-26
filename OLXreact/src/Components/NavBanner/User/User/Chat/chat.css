@@ -165,3 +165,6 @@
         margin: 0.02rem !important;
     }
 }
+.o-scroll{
+    overflow: scroll;
+}

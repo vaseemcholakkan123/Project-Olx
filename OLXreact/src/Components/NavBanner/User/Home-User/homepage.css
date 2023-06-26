@@ -52,12 +52,84 @@ p{
 }
 .Ad-card{
     border-radius: 4px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
 
 .wish-icon{
     position: absolute;
     right: 10px;
     top: 10px;
     border-radius: 54%;
-    padding: 6px 9px;
+    padding: 4px 7px;
+    border: none;
 }
+@media (max-width:570px) {
+    .Ad-image-container{
+        width: 420px;
+        height: 200px;
+    }
+    .Ad-text-container{
+        width: 420px;
+    }
+}
+.sell {
+    justify-content: center;
+    font-weight: 600;
+    z-index: 100;
+    bottom: 0;
+    background-color: transparent;
+    border-radius: 25%;
+    padding: 7px 10px;
+    font-size: 16px;
+    position: relative;
+  }
+  
+  /* BORDER */
+  .sell ._32cGm._3Vwmt {
+    fill: #fff;
+  }
+  
+  .sell ._32cGm {
+    stroke: none;
+    fill-rule: evenodd;
+    fill-opacity: 1;
+  }
+  
+  .sell ._32cGm._3XfCS {
+    fill: #ffce32;
+  }
+  
+  .sell ._32cGm._1DrSr {
+    fill: #23e5db;
+  }
+  
+  .sell ._32cGm.HKswn {
+    fill: #3a77ff;
+  }
+  
+  .sell_btn {
+    position: absolute;
+    inset: 0;
+    height: 44px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    top: 9px;
+    justify-content: center;
+    z-index: 2;
+  }
+  
+  .sell::after {
+    content: "";
+    position: absolute;
+    width: 98px;
+    height: 44px;
+    box-shadow: rgb(0 0 0 / 20%) 0px 2px 4px -1px, rgb(0 0 0 / 12%) 0px 1px 10px 0px, rgb(0 0 0 / 14%) 0px 4px 5px 0px;
+    top: 9px;
+    border-radius: 24px;
+    background: transparent;
+    z-index: -1;
+  }

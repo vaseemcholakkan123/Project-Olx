@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from .CustomMixins import WishlistserializerMixin
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,21 +28,26 @@ class CreateUserSerializer(serializers.ModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad_Images
-        fields = ("image",)
+        fields = '__all__'
 
 
-class CarsAdSerializer(serializers.ModelSerializer):
+class CarsAdSerializer(WishlistserializerMixin,serializers.ModelSerializer):
     posted_user = UserSerializer(read_only=True)
     related_images = ImageSerializer(read_only=True, many=True)
+    is_wishlisted = serializers.SerializerMethodField()
 
     class Meta:
         model = CarsAd
         fields = "__all__"
 
 
-class MobileAdSerializer(serializers.ModelSerializer):
+
+
+class MobileAdSerializer(WishlistserializerMixin,serializers.ModelSerializer):
     posted_user = UserSerializer(read_only=True)
     related_images = ImageSerializer(read_only=True, many=True)
+    is_wishlisted = serializers.SerializerMethodField()
+
 
     class Meta:
         model = MobileAd
@@ -51,25 +57,62 @@ class MobileAdSerializer(serializers.ModelSerializer):
 class PropertyAdSerializer(serializers.ModelSerializer):
     posted_user = UserSerializer(read_only=True)
     related_images = ImageSerializer(read_only=True, many=True)
+    is_wishlisted = serializers.SerializerMethodField
+
 
     class Meta:
         model = PropertyAd
         fields = "__all__"
 
 
-class AccessoryAdSerializer(serializers.ModelSerializer):
+class AccessoryAdSerializer(WishlistserializerMixin,serializers.ModelSerializer):
     related_images = ImageSerializer(read_only=True, many=True)
     posted_user = UserSerializer(read_only=True)
+    is_wishlisted = serializers.SerializerMethodField()
+
 
     class Meta:
         model = AccessoryAd
         fields = "__all__"
 
 
-class ScooterAdSerializer(serializers.ModelSerializer):
+class ScooterAdSerializer(WishlistserializerMixin,serializers.ModelSerializer):
     posted_user = UserSerializer(read_only=True)
     related_images = ImageSerializer(read_only=True, many=True)
+    is_wishlisted = serializers.SerializerMethodField()
+
 
     class Meta:
         model = ScooterAd
         fields = "__all__"
+
+
+class WishListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WishList
+        fields = ['Ad']
+    Ad = serializers.SerializerMethodField()
+
+    def get_Ad(self,obj):
+        content_type = obj.content_type
+        obj_id = obj.obj_id
+
+        try:
+            ad_model_class = content_type.model_class()
+            ad_instance = ad_model_class.objects.get(id=obj_id)
+
+            if ad_model_class == CarsAd:
+                ad_serializer = CarsAdSerializer(ad_instance,context=self.context)
+            elif ad_model_class == ScooterAd:
+                ad_serializer = ScooterAdSerializer(ad_instance,context=self.context)
+            elif ad_model_class == AccessoryAd:
+                ad_serializer = AccessoryAdSerializer(ad_instance,context=self.context)
+            elif ad_model_class == MobileAd:
+                ad_serializer = MobileAdSerializer(ad_instance,context=self.context)
+            elif ad_model_class == PropertyAd:
+                ad_serializer = PropertyAdSerializer(ad_instance,context=self.context)
+
+            return ad_serializer.data
+        
+        except ad_model_class.DoesNotExist:
+            return None

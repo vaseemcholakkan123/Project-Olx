@@ -9,6 +9,7 @@ import DetailPage from './Products/DetailPage'
 import ChatView from './User/Chat/ChatView'
 import ProfilePage from './User/Profile/ProfilePage'
 import CategoryPanel from './Home-User/Category/CategoryPanel'
+import olxAxios from '../../../Config/AxiosConfig'
 
 export type user = {
   username: string | null,
@@ -24,10 +25,15 @@ type contextType = {
     email : string | null,
     profile : string | null | File
   },
-  setUserData : Dispatch<SetStateAction<user>> | null
+  setUserData : Dispatch<SetStateAction<user>> | null,
+  setSearchQuery : Dispatch<SetStateAction<string | null>>|null
 }
 
-export const userContext = React.createContext<contextType>({userData:{username:null,user_id:null,email:null,profile:null},setUserData:null})
+export const userContext = React.createContext<contextType>({
+    userData:{username:null,user_id:null,email:null,profile:null},
+    setUserData:null,
+    setSearchQuery:null,
+  })
 export type detailType = {
     Ad_id : null|Number,
     Ad_category : null|string
@@ -41,9 +47,36 @@ function UserApp() {
   const [location,selectLocation] = useState('Kerala')
   const [searchQuery,setSearchQuery] = useState<string | null>(null)
 
+  useEffect(()=>{
+    if (localStorage.getItem('logged_user_id')){
+
+      olxAxios.get(`get-user/${localStorage.getItem('logged_user_id')}`)
+      .then(res=>{
+        localStorage.setItem('logged_user',JSON.stringify({
+          "username":res.data.username,
+          "profile":res.data.profile,
+          "user_id":res.data.id,
+          "email":res.data.email,
+        }))
+
+        setUserData(
+          {
+            username:res.data.username,
+            user_id:res.data.id,
+            email:res.data.email ? res.data.email : null,
+            profile:res.data.profile ? res.data.profile : null
+          })
+      })
+      .catch(err=>console.log(err)
+      )
+
+    }
+
+  },[])
+
   return (
     
-    <userContext.Provider value={{userData,setUserData}}>
+    <userContext.Provider value={{userData,setUserData,setSearchQuery}}>
       
         <Navbar setQuery={setSearchQuery} selectLocation={selectLocation}/>
         <Routes>

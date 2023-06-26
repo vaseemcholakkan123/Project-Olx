@@ -1,13 +1,22 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './sellForm.css'
 import CommonAd from './CommonAd'
 import { form_child } from '../Validators'
+import { useLocation } from 'react-router-dom'
 
 const types = ['Mobile' , 'Tablet']
 
 function Accessory(props:form_child) {
 
     const [selectedAccessoryType,setAccessoryType] = useState<string|null>(null)
+    const RouterState = useLocation()
+    useEffect(()=>{
+        if (RouterState.state){
+            setAccessoryType(props.product_form.accessory_type ? props.product_form.accessory_type : '')
+        }
+    })
+
+
   return (
     <div className='ps-2'>
         <p className="my-form-label">Type*</p>

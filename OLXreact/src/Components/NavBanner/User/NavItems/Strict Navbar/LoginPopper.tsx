@@ -29,7 +29,7 @@ function LoginPopper() {
     
   return (
     <>
-        <a href="" className='login-text' data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Login</a>
+        <a href="" className='login-text ms-auto-2' data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Login</a>
         
         <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">

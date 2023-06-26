@@ -24,13 +24,18 @@ ul{
     position: relative;
 }
 .locationList{
-    width: 130px;
+    width: 192.5px;
+    left: -1px;
     position: absolute;
     list-style-type: none;
     padding: 0;
-    top: 29.8px;
+    top: 46px;
     background-color: white;
-    border-radius: 7px;
+    border-radius: 0px;
+    padding-bottom: .2rem;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
     box-shadow: rgb(211, 211, 211) 0px 1px 2px 0px;
 }
 .locationList li{
@@ -39,12 +44,12 @@ ul{
     display: flex;
     column-gap: .2rem;
     align-items: center;
-    margin: .1rem .3rem;
+    margin: 0rem .3rem;
     cursor: pointer;
 }
 .locationList li:hover{
-    background-color: rgb(64, 238, 180);
-    transform: scale(.92);
+    background-color: rgb(162, 255, 224);
+    transform: scale(.99);
 }
 .locationinput{
     padding-left: .3rem;
@@ -132,6 +137,15 @@ ul{
     width: 100%;
     column-gap: 2rem;
     background-color: rgb(248, 248, 248);
+}
+@media (max-width:476px) {
+    #breadcrumbsdiv{
+        column-gap: 2.5rem;
+        justify-content: initial;
+        margin-left: .6rem;
+        overflow-x: scroll;
+
+    }
 }
 .breadcrumb-text{
     text-decoration: none;
@@ -346,4 +360,23 @@ ul{
 }
 .chat-ico:hover{
     fill: rgb(121, 237, 198);
+}
+@media (max-width:810px) {
+    .hide-lg{
+        display: none !important;
+    }
+    #navbar{
+        padding-left: .5rem;
+    }
+    .ms-auto-2{
+        margin-left: auto !important;
+    }
+    #searchbar{
+        padding: .3rem;
+        border: 1px solid black;
+    }
+}
+.ms-auto-2{
+    margin-left: .2rem;
+    margin-right: .5rem;
 }

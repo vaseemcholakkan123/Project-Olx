@@ -1,7 +1,7 @@
-import { useState,useContext } from 'react'
+import { useState,useContext, useEffect, useRef } from 'react'
 import '../User/user.css'
 import { location } from '../NavItems/Strict Navbar/Navbar'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Mobile from './DynamicForms/Mobile'
 import Property from './DynamicForms/Property'
 import Car from './DynamicForms/Car'
@@ -14,7 +14,7 @@ import olxAxios from '../../../../Config/AxiosConfig'
 import { userContext } from '../UserApp'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { AxiosError } from 'axios'
+import { NotifyUpdateSuccess } from '../Helper'
 
 
 const category = [
@@ -64,6 +64,9 @@ function SellProduct() {
     const [selectedLocation,selectLocation] = useState<string|null>(null)
     const url = useNavigate()
     const [images,setImages] = useState<string[]>([]) 
+    const Routerstate = useLocation()
+    const priceInp = useRef<HTMLInputElement>(null)
+    // const [imagesList,SetImageList] = useState<{image:string,id:number}|null>(null)
 
     const NotifySuccess = () => toast.success("Ad Posted Successfully !",
                     { position: "top-center",
@@ -90,30 +93,106 @@ function SellProduct() {
 
     function handleSubmit(){
 
-        validate_base_form({appendBaseFormErr:ValidateForm,form:productForm,errors:form_errors})
-        if (!form_errors.has_no_error) return;
-        setLoading(true)
-        
-        let submitUrl = `ads-${productForm.category}/`
-        productForm.posted_user = userData.user_id
-        if (productForm.category == 'Property') productForm.category = 'Properties'
+        if (Routerstate.state){
 
-        olxAxios.post(submitUrl,
-                productForm,
-                {headers:{'Content-Type':'multipart/form-data'}})
-        .then(res => {
-            setLoading(false);
-            NotifySuccess()
-            url('/')
+            validate_base_form({appendBaseFormErr:ValidateForm,form:productForm,errors:form_errors})
+            if (!form_errors.has_no_error) return;
+            setLoading(true)
+            let cat_link = productForm.category == 'Properties' ? 'Property' : productForm.category  
+            let submitUrl = `ads-${cat_link}/${Routerstate.state.editAd}/`
+            productForm.posted_user = userData.user_id
+            if (productForm.category == 'Property') productForm.category = 'Properties'
+            
+
+            olxAxios.put(submitUrl,
+                    productForm,
+                    {headers:{'Content-Type':'multipart/form-data'}})
+            .then(res => {
+                setLoading(false);
+                NotifyUpdateSuccess()
+                url('/')
+            }
+            ).catch(err => {
+                console.log(err.response.data);
+                
+                let errs:any = Object.values(err.response?.data)[0]
+                NotifyFailure(errs[0])
+                setLoading(false)
+            }
+            )
+
+        }else{
+            validate_base_form({appendBaseFormErr:ValidateForm,form:productForm,errors:form_errors})
+            if (!form_errors.has_no_error) return;
+            setLoading(true)
+            
+            let submitUrl = `ads-${productForm.category}/`
+            productForm.posted_user = userData.user_id
+            if (productForm.category == 'Property') productForm.category = 'Properties'
+
+            olxAxios.post(submitUrl,
+                    productForm,
+                    {headers:{'Content-Type':'multipart/form-data'}})
+            .then(res => {
+                setLoading(false);
+                NotifySuccess()
+                url('/')
+            }
+            ).catch(err => {
+                let errs:any = Object.values(err.response?.data)[0]
+                NotifyFailure(errs[0])
+                setLoading(false)
+            }
+            )
         }
-        ).catch(err => {
-            let errs:any = Object.values(err.response?.data)[0]
-            NotifyFailure(errs[0])
-            setLoading(false)
-        }
-        )
 
     }
+
+    useEffect(()=>{
+        if(Routerstate.state){
+            
+            let edit_category = Routerstate.state.category == 'Properties' ? 'Property' : Routerstate.state.category
+             
+           olxAxios.get(`ads-${edit_category}/${Routerstate.state.editAd}`)
+           .then(res=>{
+                let images = []
+            
+                for (let index = 0; index < 3; index++) images.push(res.data.related_images[index].image)
+
+                MaintainForm(
+                    {
+                        title : res.data.title,
+                        model_name : res.data.model_name ? res.data.model_name : null,
+                        battery_health : res.data.battery_health ? res.data.battery_health : null,
+                        years_used : res.data.years_used ? res.data.years_used : null,
+                        brand : res.data.brand ? res.data.brand : null,
+                        accessory_type : res.data.accessory_type ? res.data.accessory_type : null,
+                        km_driven : res.data.km_driven ? res.data.km_driven : null,
+                        year : res.data.year ? res.data.year : null,
+                        transmission_type : res.data.transmission_type ? res.data.transmission_type : null,
+                        fuel_type : res.data.fuel_type ? res.data.fuel_type : null,
+                        no_of_owners : res.data.no_of_owners ? res.data.no_of_owners : null, 
+                        price : res.data.price,
+                        category : res.data.category,
+                        building_type : res.data.building_type ? res.data.building_type : null,
+                        bedrooms : res.data.bedrooms ? res.data.bedrooms : null,
+                        bathrooms : res.data.bathrooms ? res.data.bathrooms : null,
+                        description : res.data.description,
+                        ad_location : res.data.ad_location,
+                        related_images : images,
+                    })
+                selectCategory(res.data.category == 'Properties' ? 'Property' : res.data.category)
+                setImages(images)
+                priceInp.current ? priceInp.current.value = res.data.price : null
+                selectLocation(res.data.ad_location)
+           })
+           .catch(err=>{
+            NotifyFailure('Internal error,Pls try again later')
+            url('/')
+           })
+
+        }
+    },[])
 
   return (
     <div className='container-fluid'>
@@ -177,7 +256,7 @@ function SellProduct() {
             <p className="my-form-label">Price*</p>
             <div className="price-input">
                 <p>₹</p>
-                <input type="number" min={1} placeholder='100' onChange={e=>{MaintainForm({...productForm,price:Number(e.target.value)})}} />
+                <input ref={priceInp} type="number" min={1} placeholder='100' onChange={e=>{MaintainForm({...productForm,price:Number(e.target.value)})}} />
             </div>
         </div>
         <div className="form-el border-noup nopadding-formel-md border-nobottom">

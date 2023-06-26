@@ -28,7 +28,12 @@ urlpatterns = [
     path("lsads/<location>/<query>", views.ListAds.as_view(), name="ads"),
     path("lsads/<location>/", views.ListAds.as_view(), name="ads"),
     path('search-user/<query>',views.SearchUser.as_view(),name='user-search'),
-    path('edit-profile_pic',views.ChangeProfile.as_view(),name='cahnge-profile')
+    path('edit-profile_pic',views.ChangeProfile.as_view(),name='cahnge-profile'),
+    path('wishlist_ad/<category>/<id>',views.AddToWishlist.as_view(),name='wishlist_add'),
+    path('get-user-wishlist',views.UserWishlist.as_view(),name='get-wishlist'),
+    path('remove_wishlist_ad/<category>/<id>',views.RemoveWishlist.as_view(),name='remove-wishlist-item'),
+    path('get-chat-threads',views.GetChatThreads.as_view(),name='chat-threads'),
+    path('get-thread-messages/<reciever>',views.GetThreadMessages.as_view(),name='thread-messages'),
 ]
 
 urlpatterns = urlpatterns + router.urls
