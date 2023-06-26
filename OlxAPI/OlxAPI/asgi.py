@@ -18,5 +18,5 @@ from services.middlewares import JwtAuthForAsgiStack
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OlxAPI.settings")
 
 application = ProtocolTypeRouter(
-    {"http": get_asgi_application(), "websocket":  JwtAuthForAsgiStack( URLRouter(websocket_urlpatterns))}
+    {"http": get_asgi_application(),'https': get_asgi_application(), "websocket":  JwtAuthForAsgiStack( URLRouter(websocket_urlpatterns))}
 )
