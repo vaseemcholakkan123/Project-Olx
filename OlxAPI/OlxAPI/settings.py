@@ -151,15 +151,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://649ac87d4c55ff00bb0871cd--harmonious-axolotl-a2cf27.netlify.app"
+    "https://649ac87d4c55ff00bb0871cd--harmonious-axolotl-a2cf27.netlify.app",
     # 'http://10.4.2.62:5173'
 ]
 # CORS_ORIGIN_WHITELIST = (
 #        'http://localhost:5173',
+
 #        'http://10.4.2.62:5173/',
 # )
 
-# CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_ALL_ORIGINS = True
 
 SIMPLE_JWT = {
