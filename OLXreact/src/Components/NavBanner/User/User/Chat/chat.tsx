@@ -74,7 +74,7 @@ export const UserMessageElement = (msg:string,userID:Number|null,senderID:Number
 export const getEndpoint = () =>{
     
     var location = window.location
-    let wsStart = 'ws://'
+    let wsStart = 'wss://'
 
     if (location.protocol == 'https') wsStart = 'wss://'
 
