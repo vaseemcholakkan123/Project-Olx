@@ -60,11 +60,9 @@ function HomePage(props:propshome) {
     olxAxios.get(fetchurl).then(res=>{
       let lis: Array<ad> = [...res.data.Cars , ...res.data.Scooter , ...res.data.Mobile , ...res.data.Accessory , ...res.data.Property]
       SetAdList(lis)
-      console.table(lis)
-      
+
     })
     .catch(err=>{
-      console.log(err.data,'llllllllll');
       
     })
   },[props.location,props.query])

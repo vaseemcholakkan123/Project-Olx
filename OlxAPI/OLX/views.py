@@ -289,7 +289,7 @@ class ChangeProfile(APIView):
         user_data = {
                     "username": request.user.username,
                     "user_id": request.user.id,
-                    "profile": "https://moddroid.tk/olx-api" + request.user.profile.url,
+                    "profile": "https://moddroid.tk" + request.user.profile.url,
                     "email": request.user.email,
                 }
         return Response(status=status.HTTP_200_OK,data={'user':user_data})
