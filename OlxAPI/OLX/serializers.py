@@ -26,6 +26,13 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
+
+    def get_image(self, instance):
+        image_url = instance.image.url
+        if image_url.startswith('http://'):
+            image_url = image_url.replace('http://', 'https://')
+        return image_url
+
     class Meta:
         model = Ad_Images
         fields = '__all__'
