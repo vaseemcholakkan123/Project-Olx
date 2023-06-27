@@ -27,6 +27,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
 class ImageSerializer(serializers.ModelSerializer):
 
+    image = serializers.SerializerMethodField()
+
     def get_image(self, instance):
         image_url = instance.image.url
         if image_url.startswith('http://'):
