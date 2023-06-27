@@ -111,7 +111,7 @@ class AdminLogin(APIView):
                     )
 
                 if user.profile:
-                    prof = "http://127.0.0.1:8000" + user.profile.url
+                    prof = "https://127.0.0.1:8000" + user.profile.url
                 else:
                     prof = None
                 user_data = {
