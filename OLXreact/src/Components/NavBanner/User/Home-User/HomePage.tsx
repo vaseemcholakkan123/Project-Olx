@@ -51,6 +51,7 @@ type propshome = {
 
 
 function HomePage(props:propshome) {
+  const url = useNavigate()
 
   useEffect(()=>{
     
@@ -84,7 +85,7 @@ function HomePage(props:propshome) {
 
       <div className="user-home-container">
 
-        <h4>Fresh recommendations</h4>
+        <h4 className='fresh'>Fresh recommendations</h4>
 
         <div className="ads-container row gy-4 gx-2">
             {
@@ -101,7 +102,7 @@ function HomePage(props:propshome) {
           
               }
 
-        <div className='position-fixed d-md-none' style={{bottom:'45px'}}>
+        <div className='position-fixed d-md-none' onClick={e=>{url('/Post-Ad')}} style={{bottom:'45px'}}>
           <div className="sell d-flex d-md-none">
             <svg
               width="104"

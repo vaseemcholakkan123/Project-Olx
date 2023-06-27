@@ -93,7 +93,10 @@ export const NotifyLoginFailure = () => toast.warn("Login to Chat",
 
 
 export async function handleWishlist(id:number|null,category:string|null){
-    if(!localStorage.getItem('logged_user')) return NotifyFailure()
+    if(!localStorage.getItem('logged_user')){
+        NotifyFailure()
+        return Promise.reject()
+    }
     if(!id || !category) return
 
     try{

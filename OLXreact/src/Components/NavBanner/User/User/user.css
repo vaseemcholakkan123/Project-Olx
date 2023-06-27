@@ -93,6 +93,15 @@
     margin-left: auto;
     margin-right: auto;
 }
+@media (max-width:450px) {
+    .main-body{
+        padding: .6rem .3rem;
+
+    }
+    .extra-p{
+        padding: .6rem .7rem;
+    }
+}
 .main-body > div{
     min-width:50% ;
 }

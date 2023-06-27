@@ -68,12 +68,25 @@ p{
 }
 @media (max-width:570px) {
     .Ad-image-container{
-        width: 420px;
-        height: 200px;
+        width: 390px;
+        height: 230px;
     }
     .Ad-text-container{
-        width: 420px;
+        width: 390px;
     }
+    .fresh{
+        padding-bottom: .5rem;
+    }
+}
+@media (max-width:400px) {
+    .Ad-image-container{
+        width: 300px;
+        height: 230px;
+    }
+    .Ad-text-container{
+        width: 300px;
+    }
+
 }
 .sell {
     justify-content: center;

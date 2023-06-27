@@ -53,8 +53,8 @@
     padding-right: 0 !important;
 }
 .chat-height{
-    min-height: calc(100vh - 8rem);
-    max-height: calc(100vh - 8rem);
+    min-height: calc(100vh - 7rem);
+    max-height: calc(100vh - 7rem);
 }
 .chat-container{
     margin-top: .2rem !important;
@@ -112,11 +112,12 @@
 .olx-messenger > footer > form > input { 
     width: 90%;
     border: none;
-    font-size: x-large !important;
+    font-size: x-large;
 }
 .send-btn{
     border:solid .01rem gray;
     padding: .4rem .7rem;
+    float: right    ;
     border-radius: .4rem;
     background-color: #c8f8f6;
 }
@@ -167,4 +168,29 @@
 }
 .o-scroll{
     overflow: scroll;
+}
+@media (max-width:400px) {
+    .check-p{
+        padding: .4rem !important;
+    }
+  
+}
+@media (max-width:500px) {
+    .messenger{
+        width: 85% !important;
+        font-size: large !important;
+    }
+    .send-btn{
+        /* padding: .2rem .4rem; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .name{
+        font-size: medium !important;
+    }
+    .chat-height{
+        min-height: calc(100vh - 5rem);
+        max-height: calc(100vh - 5rem);
+    }
 }

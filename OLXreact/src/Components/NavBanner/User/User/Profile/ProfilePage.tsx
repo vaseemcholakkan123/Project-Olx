@@ -59,9 +59,9 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
   return (
     <>
     <CatorBread noBanner={true} />
-    <div className='profile-container row'>
+    <div className='profile-container row no-gutter'>
         <div className="user-holder col-12 col-md-3">
-            <img className='rounded-circle mb-2 ms-0' src={userdata.profile ? BASE_IMAGE_URL + userdata.profile : 'https://statics.olx.in/external/base/img/avatar_1.png'} width={90} height={90} alt="" />
+            <img className='rounded-circle mb-2 ms-0' src={userdata.profile ? userdata.profile : 'https://statics.olx.in/external/base/img/avatar_1.png'} width={90} height={90} alt="" />
             <h4>{userdata.username}</h4>
 
             <div className="d-flex a-center">
@@ -169,7 +169,7 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
 
                                 }
 
-                                <img onClick={()=>{ url(`/details/${item.title}`); props.ShowDetails({Ad_category:item.category , Ad_id : item.id}); localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} src={item.related_images[0].image} width={400} height={300} alt="asdsa  " />
+                                <img onClick={()=>{ url(`/details/${item.title}`); props.ShowDetails({Ad_category:item.category , Ad_id : item.id}); localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} src={ BASE_IMAGE_URL + item.related_images[0].image} width={400} height={300} alt="asdsa  " />
 
                             </div>
                             <div onClick={()=>{ url(`/details/${item.title}`); props.ShowDetails({Ad_category:item.category , Ad_id : item.id});localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} className="Ad-text-container">

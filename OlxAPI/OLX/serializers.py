@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_profile(self, instance):
         if instance.profile:
-            image_url =  'https://moddroid.tk/olx-api' + instance.profile.url
+            image_url =  'https://moddroid.tk' + instance.profile.url
         else:
             image_url = None
 

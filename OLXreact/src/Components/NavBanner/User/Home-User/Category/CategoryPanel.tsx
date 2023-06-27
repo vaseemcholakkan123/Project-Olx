@@ -68,11 +68,11 @@ function CategoryPanel(props:{ShowDetails:Dispatch<SetStateAction<detailType>>})
                   </p>
 
                   <div className="offcanvas offcanvas-bottom filter2" tabIndex={-1} id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
-                    <div className="offcanvas-header">
+                    <div className="offcanvas-header plot-2">
                       <h5 className="offcanvas-title" id="offcanvasBottomLabel">Filter Ads</h5>
                       <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
-                    <div className="offcanvas-body small">
+                    <div className="offcanvas-body small plot">
                         {
                         RouterState.state.category =='Car' ? <CarsSideBar SetFilter={SetFilter} />
                         : RouterState.state.category == 'Property' ? <PropertySidebar SetFilter={SetFilter} />

@@ -50,4 +50,13 @@
     .user-holder{
         padding-left: 1.2rem;
     }
+    .dynamic-p{
+        margin-left: 0 !important;
+    }
+    .no-gutter{
+        padding-top: .2rem !important;
+    }
+}
+.no-gutter{
+    --bs-gutter-x: 0 !important;
 }

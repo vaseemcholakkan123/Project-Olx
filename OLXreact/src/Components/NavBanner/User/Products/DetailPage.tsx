@@ -127,7 +127,7 @@ function DetailPage(props:detailpageProps) {
                         DetailAd?.related_images.map(item=>{
                             return (
                                 <div key={item.image} className="carousel-item active">
-                                    <img src={item.image} className="d-block w-100" alt="..." />
+                                    <img src={BASE_IMAGE_URL + item.image} className="d-block w-100" alt="..." />
                                 </div>
                             )
                         })

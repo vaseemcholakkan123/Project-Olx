@@ -48,3 +48,15 @@ body {
     right: 13px;
   }
 }
+@media (max-width:500px) {
+  .Toastify__toast-container{
+    max-width: 75vw !important;
+    margin-top: .6rem;
+    transform: translateX(15%);
+    font-size: small !important;
+  }
+  .Toastify__toast-body{
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}

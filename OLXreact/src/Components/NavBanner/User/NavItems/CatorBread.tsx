@@ -49,7 +49,7 @@ function CatorBread(props:breadprops) {
 
     <div>
 
-    <div id="searchbar2" className='d-md-none ms-1 me-1 mb-1'>
+    <div id="searchbar2" className='d-md-none ms-1 me-1 mt-1 mb-2'>
         <input type="text" ref={searchinp} className='w-100' placeholder='Find Cars, Mobile Phones and more...' />
 
         <div className="search-icon-div ms-auto" >
@@ -62,27 +62,27 @@ function CatorBread(props:breadprops) {
 
     </div>
     <div id='breadcrumbsdiv'>
-        <div className='text-center'>
+        <div className='text-center' onClick={e=>{url('/category/mobiles',{state:{'category':'Mobile'}})}}>
           <img className='d-sm-none' src={mobileimage} width={48} height={48} alt="" />
-          <p className="breadcrumb-text f-small" onClick={e=>{url('/category/mobiles',{state:{'category':'Mobile'}})}}>Mobiles</p>
+          <p className="breadcrumb-text f-small" >Mobiles</p>
         </div>
 
-        <div className='text-center'>
+        <div className='text-center' onClick={e=>url('/category/cars',{state:{'category':'Car'}})}>
           <img className='d-sm-none' src={carimage} width={48} height={48} alt="" />
-          <p className="breadcrumb-text f-small" onClick={e=>url('/category/cars',{state:{'category':'Car'}})}>Cars</p>
+          <p className="breadcrumb-text f-small" >Cars</p>
         </div>
 
-        <div className='text-center'>
+        <div className='text-center' onClick={e=>url('/category/scooters',{state:{'category':'Scooter'}})}>
           <img className='d-sm-none' src={bikeimage} width={48} height={48} alt="" />
-          <p className="breadcrumb-text f-small" onClick={e=>url('/category/scooters',{state:{'category':'Scooter'}})}>Scooter</p>
+          <p className="breadcrumb-text f-small" >Scooter</p>
         </div>
-        <div className='text-center'>
+        <div className='text-center' onClick={e=>url('/category/Properties',{state:{'category':'Property'}})}>
           <img className='d-sm-none' src={propertyimage} width={48} height={48} alt="" />
-          <p className="breadcrumb-text f-small" onClick={e=>url('/category/Properties',{state:{'category':'Property'}})}>Properties</p>
+          <p className="breadcrumb-text f-small" >Properties</p>
         </div>
-        <div className='text-center'>
+        <div className='text-center' onClick={e=>url('/category/accessories',{state:{'category':'Accessory'}})}>
           <img className='d-sm-none' src={accessoryimage} width={48} height={48} alt="" />
-          <p className="breadcrumb-text f-small" onClick={e=>url('/category/accessories',{state:{'category':'Accessory'}})}>Accessories</p>
+          <p className="breadcrumb-text f-small">Accessories</p>
         </div>
 
         {/* <a className="breadcrumb-text" onClick={e=>url('/category/motorcycles',{state:{'category':'Scooter'}})}>MotorCycles</a> */}
@@ -91,7 +91,7 @@ function CatorBread(props:breadprops) {
 
     {
       props.noBanner ? null :
-      <img src="https://statics.olx.in/olxin/banners/hero_bg_in_v4@1x.png" alt="" id="banner" />
+      <img className='d-none d-md-block' src="https://statics.olx.in/olxin/banners/hero_bg_in_v4@1x.png" alt="" id="banner" />
     }
     </div>
     

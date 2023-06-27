@@ -121,7 +121,7 @@ function ChatView(props:ChatViewProps) {
     }
  
     return (
-    <div className="user-home-container row no-p chat-container y-hidden">
+    <div className="user-home-container row no-p chat-container check-p y-hidden">
         <div className={chatroom ? "col-12 col-md-9 col-lg-4 chat-height dynamic-chat border1-bottom overflow-y-hidden" : "col-12 col-md-9 col-lg-4 chat-height border1-bottom overflow-y-hidden"}>
             <div className="border1 p-3 bg-light d-flex a-center">
                 {   searching ?
