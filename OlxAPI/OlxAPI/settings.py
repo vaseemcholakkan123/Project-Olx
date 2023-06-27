@@ -153,6 +153,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://649ac87d4c55ff00bb0871cd--harmonious-axolotl-a2cf27.netlify.app",
     "https://project-olx-rho.vercel.app",
+    "https://project-8d8d19e09-vaseemcholakkan123.vercel.app"
     # 'http://10.4.2.62:5173'
 ]
 # CORS_ORIGIN_WHITELIST = (
