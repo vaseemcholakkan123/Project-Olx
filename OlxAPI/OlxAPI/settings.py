@@ -168,7 +168,7 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = "OLX.OlxUser"
 
-MEDIA_URL = "olx-media/"
+MEDIA_URL = "olx-api/olx-media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 CHANNEL_LAYERS = {
