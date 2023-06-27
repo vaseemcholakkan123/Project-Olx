@@ -4,6 +4,7 @@ import { ad } from './HomePage'
 import { handleWishlistDelete, handleWishlist } from '../Helper'
 import { detailType } from '../UserApp'
 import { useNavigate } from 'react-router-dom'
+import { BASE_IMAGE_URL } from '../../../../Config/ConstAPI'
 
 type AdCardType = {
     Ad : ad,
@@ -42,7 +43,7 @@ function AdCard({Ad,showDetails,cat}:AdCardType) {
                     </button>
                 }
                 
-                <img src={item.related_images[0].image} width={400} height={300} onClick={()=>{ url(`/details/${item.title}`); showDetails({Ad_category:item.category , Ad_id : item.id});localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} />
+                <img src={ BASE_IMAGE_URL +  item.related_images[0].image} width={400} height={300} onClick={()=>{ url(`/details/${item.title}`); showDetails({Ad_category:item.category , Ad_id : item.id});localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} />
 
               </div>
               <div className="Ad-text-container" onClick={()=>{ url(`/details/${item.title}`); showDetails({Ad_category:item.category , Ad_id : item.id}); localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }}>

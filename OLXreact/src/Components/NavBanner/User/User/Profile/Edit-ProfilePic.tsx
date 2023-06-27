@@ -28,7 +28,7 @@ function EditProfilePic({setActivePage,activePage,...props}:pic) {
         <div className="form-el border-noup">
             
             <div className="d-flex">
-                <img className='m-1 rounded-circle' width={200} height={200} src={props.profile ? String(props.profile) : 'https://statics.olx.in/external/base/img/avatar_1.png'} alt="" />
+                <img className='m-1 rounded-circle' width={200} height={200} src={userData.profile ? String(userData.profile) : 'https://statics.olx.in/external/base/img/avatar_1.png'} alt="" />
                 <div className='m-1 p-2 container-1'>
                     <p className='f-medium w-90 mb-2'>Clear photos are an important way for buyers and sellers to learn about each other. Be sure doesn’t include any personal or sensitive info you’d rather not have others see.</p>
                     <p className="mt-2 f-medium wieght-500">It’s not much fun to chat with a landscape!</p>

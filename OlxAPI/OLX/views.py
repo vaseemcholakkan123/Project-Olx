@@ -48,7 +48,7 @@ class UserLogin(APIView):
             user = authenticate(username=username_data, password=password_data)
             if user:
                 if user.profile:
-                    prof = "http://127.0.0.1:8000" + user.profile.url
+                    prof = "https://moddroid.tk/olx-api" + user.profile.url
                 else:
                     prof = None
                 user_data = {
@@ -111,7 +111,7 @@ class AdminLogin(APIView):
                     )
 
                 if user.profile:
-                    prof = "https://127.0.0.1:8000" + user.profile.url
+                    prof = "https://moddroid.tk/olx-api" + user.profile.url
                 else:
                     prof = None
                 user_data = {
@@ -212,12 +212,12 @@ class ListAds(APIView):
 
     def get(self, request, *args, **kwargs):
         try:
-            location = kwargs['location']
+            location = request.GET['location']
         except:
             location = 'Kerala'
 
         try:
-            query = kwargs['query']
+            query = request.GET['query']
         except:
             query = '' 
 
@@ -289,7 +289,7 @@ class ChangeProfile(APIView):
         user_data = {
                     "username": request.user.username,
                     "user_id": request.user.id,
-                    "profile": "http://127.0.0.1:8000" + request.user.profile.url,
+                    "profile": "https://moddroid.tk/olx-api" + request.user.profile.url,
                     "email": request.user.email,
                 }
         return Response(status=status.HTTP_200_OK,data={'user':user_data})
@@ -358,7 +358,6 @@ class RemoveWishlist(APIView):
         
         try:
             wish_item = WishList.objects.get(user=request.user,content_type=ContentType.objects.get_for_model(item),obj_id=item.id)
-            print('done',wish_item)
             wish_item.delete()
         except Exception as e:
             print(e)

@@ -4,6 +4,11 @@ from .CustomMixins import WishlistserializerMixin
 
 
 class UserSerializer(serializers.ModelSerializer):
+    profile = serializers.SerializerMethodField()
+
+    def get_profile(self, instance):
+        image_url = instance.profile.url
+        return image_url
     class Meta:
         model = OlxUser
         fields = ("username", "email", "profile", "id","date_joined")
@@ -17,7 +22,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         password = validated_data.pop("password", None)
         instance = self.Meta.model(**validated_data)
-        print(validated_data)
+
         if password:
             instance.set_password(password)
 
@@ -31,8 +36,6 @@ class ImageSerializer(serializers.ModelSerializer):
 
     def get_image(self, instance):
         image_url = instance.image.url
-        if image_url.startswith('http://'):
-            image_url = image_url.replace('http://', 'https://')
         return image_url
 
     class Meta:

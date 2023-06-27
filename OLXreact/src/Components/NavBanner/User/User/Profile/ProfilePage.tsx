@@ -7,6 +7,7 @@ import { ad } from '../../Home-User/HomePage'
 import CatorBread from '../../NavItems/CatorBread'
 import { handleWishlist, handleWishlistDelete } from '../../Helper'
 import NoData from '../../NoData'
+import { BASE_IMAGE_URL } from '../../../../../Config/ConstAPI'
 
 
 
@@ -60,7 +61,7 @@ function ProfilePage(props:{ShowDetails:Dispatch<SetStateAction<detailType>>}) {
     <CatorBread noBanner={true} />
     <div className='profile-container row'>
         <div className="user-holder col-12 col-md-3">
-            <img className='rounded-circle mb-2 ms-0' src={userdata.profile ? userdata.profile : 'https://statics.olx.in/external/base/img/avatar_1.png'} width={90} height={90} alt="" />
+            <img className='rounded-circle mb-2 ms-0' src={userdata.profile ? BASE_IMAGE_URL + userdata.profile : 'https://statics.olx.in/external/base/img/avatar_1.png'} width={90} height={90} alt="" />
             <h4>{userdata.username}</h4>
 
             <div className="d-flex a-center">

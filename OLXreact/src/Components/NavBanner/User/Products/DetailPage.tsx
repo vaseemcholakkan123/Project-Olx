@@ -8,6 +8,7 @@ import { userContext } from '../UserApp'
 import CatorBread from '../NavItems/CatorBread'
 import { handleWishlist, handleWishlistDelete } from '../Helper'
 import AdCard from '../Home-User/AdCard'
+import { BASE_IMAGE_URL } from '../../../../Config/ConstAPI'
 
 type detailpageProps = {
     ad_id : null|Number,
@@ -178,7 +179,7 @@ function DetailPage(props:detailpageProps) {
 
             <div className="border1 detail-container1 p-3 mt-2">
                 <div className="d-flex a-center"  onClick={e=>url(`/profile/${DetailAd?.posted_user?.username}`,{state:{'user_id':DetailAd?.posted_user?.id}})}>
-                    <img src={DetailAd?.posted_user?.profile ? DetailAd?.posted_user?.profile : 'https://statics.olx.in/external/base/img/avatar_1.png'} width={100} height={100} alt="" className="rounded-circle" />
+                    <img src={DetailAd?.posted_user?.profile ? BASE_IMAGE_URL + DetailAd?.posted_user?.profile : 'https://statics.olx.in/external/base/img/avatar_1.png'} width={100} height={100} alt="" className="rounded-circle" />
                     <h3 className='ms-3'>{DetailAd?.posted_user?.username}</h3>
                     <svg width="18px" height="18px" viewBox="0 0 1024 1024" data-aut-id="icon" className="ms-auto" fillRule="evenodd"><path className="rui-w4DG7" d="M277.333 85.333v60.331l366.336 366.336-366.336 366.336v60.331h60.331l409.003-408.981v-35.307l-409.003-409.045z"></path></svg>
                 </div>
@@ -246,7 +247,7 @@ function DetailPage(props:detailpageProps) {
                                         </button>
                                     }
                                     
-                                    <img src={item.related_images[0].image} width={400} height={300} onClick={()=>{ url(`/details/${item.title}`); SetAd(item);localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} />
+                                    <img src={ BASE_IMAGE_URL + item.related_images[0].image} width={400} height={300} onClick={()=>{ url(`/details/${item.title}`); SetAd(item);localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} />
 
                                 </div>
                                 <div className="Ad-text-container" style={{width:'400px'}} onClick={()=>{ url(`/details/${item.title}`); SetAd(item); localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }}>
@@ -339,7 +340,7 @@ function DetailPage(props:detailpageProps) {
                                         </button>
                                     }
                                     
-                                    <img src={item.related_images[0].image} width={400} height={300} onClick={()=>{ url(`/details/${item.title}`); SetAd(item);localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} />
+                                    <img src={ BASE_IMAGE_URL +item.related_images[0].image} width={400} height={300} onClick={()=>{ url(`/details/${item.title}`); SetAd(item);localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} />
 
                                 </div>
                                 <div className="Ad-text-container" onClick={()=>{ url(`/details/${item.title}`); SetAd(item); localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }}>

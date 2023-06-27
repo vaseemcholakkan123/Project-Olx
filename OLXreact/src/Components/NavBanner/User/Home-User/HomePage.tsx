@@ -54,7 +54,7 @@ function HomePage(props:propshome) {
 
   useEffect(()=>{
     
-    let fetchurl = props.query ? `lsads/${props.location}/${props.query}` : `lsads/${props.location}`
+    let fetchurl = props.query ? `lsads/?location=${props.location}&query=${props.query}` : `lsads/${props.location}`
     
     olxAxios.get(fetchurl).then(res=>{
       let lis: Array<ad> = [...res.data.Cars , ...res.data.Scooter , ...res.data.Mobile , ...res.data.Accessory , ...res.data.Property]
