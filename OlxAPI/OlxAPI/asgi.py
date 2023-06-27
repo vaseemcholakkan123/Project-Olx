@@ -12,11 +12,20 @@ import os
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from services.routing import websocket_urlpatterns
-from channels.auth import AuthMiddlewareStack
+from django.contrib.staticfiles.handlers import ASGIStaticFilesHandler
 from services.middlewares import JwtAuthForAsgiStack
+from channels.auth import AuthMiddlewareStack
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OlxAPI.settings")
 
 application = ProtocolTypeRouter(
-    {"http": get_asgi_application(),'https': get_asgi_application(), "websocket":  JwtAuthForAsgiStack( URLRouter(websocket_urlpatterns))}
+    {
+        "http": get_asgi_application(),
+        "websocket":  AuthMiddlewareStack( 
+                            JwtAuthForAsgiStack( URLRouter(websocket_urlpatterns))
+                                        )
+    
+    }
 )
+
+application = ASGIStaticFilesHandler(application)

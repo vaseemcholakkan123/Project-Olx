@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext, BaseSyntheticEvent, Dispatch, SetStateAction } from 'react'
 import './chat.css'
-import { UserMessageElement, getEndpoint, handleInvalidToken } from './chat'
+import { UserMessageElement, getEndpoint } from './chat'
 import { userContext } from '../../UserApp'
 import { NotifyServerFailure, updateTimes } from '../../Helper'
 import olxAxios from '../../../../../Config/AxiosConfig'
@@ -61,14 +61,16 @@ function ChatOne(props:ChatOneProps) {
         
         socket.onopen = async event => {
             setSocket(socket)
+            console.log('connected');
+            
         }
         
         socket.onerror = async event => {
-            try {
-                handleInvalidToken()
-            } catch (error) {
-                NotifyServerFailure()
-            }
+
+            console.log(event);
+            
+            NotifyServerFailure()
+        
             
         }
         
