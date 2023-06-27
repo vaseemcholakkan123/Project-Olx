@@ -7,7 +7,11 @@ class UserSerializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField()
 
     def get_profile(self, instance):
-        image_url = instance.profile.url
+        if instance.profile:
+            image_url = instance.profile.url
+        else:
+            image_url = None
+
         return image_url
     class Meta:
         model = OlxUser
