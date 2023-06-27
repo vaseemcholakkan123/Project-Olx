@@ -12,7 +12,7 @@ User = get_user_model()
 
 class ChatUser(AsyncConsumer):
 
-
+    
 
     async def websocket_connect(self, event):
         print("websocket connected",event)
