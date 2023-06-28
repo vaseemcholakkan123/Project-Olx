@@ -63,6 +63,7 @@ function HomePage(props:propshome) {
 
     })
     .catch(err=>{
+
       
     })
   },[props.location,props.query])
