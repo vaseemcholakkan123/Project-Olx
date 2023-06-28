@@ -163,7 +163,7 @@ function ChatView(props:ChatViewProps) {
                         return(
                             <div key={user.username} className="chat-room">
                                 <div className={user.username == chatroom?.username ? "chat-room-reciever-holder active-chat" : "chat-room-reciever-holder"} onClick={e =>{ selectChatroom({ username : user.username , profile : user.profile , id : user.id}) } }>
-                                    <img src={user.profile ? `http://moddroid.tk/olx-api${user.profile}` : defaultpic} className='rounded-circle' alt="profile" width={70} height={70} />
+                                    <img src={user.profile ? user.profile : defaultpic} className='rounded-circle' alt="profile" width={70} height={70} />
                                     <p className="chat-room-name">{user.username}</p>
                                 </div>
                                 
@@ -186,7 +186,7 @@ function ChatView(props:ChatViewProps) {
             <div className={chatroom ? 'border1 border-no-left h-100 chatrooms-holder'  : 'border1 border-no-left p-3 h-100 chatrooms-holder'}>
                {chatroom ? 
                
-               <ChatOne setChatroom={selectChatroom} username={chatroom.username} profile={chatroom.profile ? `http://127.0.1:8000${chatroom.profile}` : defaultpic} reciever_id={chatroom.id} />
+               <ChatOne setChatroom={selectChatroom} username={chatroom.username} profile={chatroom.profile ? chatroom.profile : defaultpic} reciever_id={chatroom.id} />
                
                : 
                

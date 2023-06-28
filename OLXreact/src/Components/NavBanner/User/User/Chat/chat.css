@@ -110,7 +110,7 @@
     padding: .6rem;
 }
 .olx-messenger > footer > form > input { 
-    width: 85%;
+    width: 82.5%;
     background-color: inherit;
     font-family: monospace;
     border: none;
@@ -171,6 +171,10 @@
         width: 80%;
         padding: .8rem;
     }
+    .chat-height{
+        height: calc(100vh - 98px);
+        max-height: calc(100vh - 98px) !important;
+    }
 }
 .o-scroll{
     overflow: scroll;
@@ -197,7 +201,7 @@
     }
     .chat-height{
         height: calc(100vh - 98px);
-        
+        max-height: calc(100vh - 98px) !important;
     }
     .user-msg{
         margin-right: .4rem;
@@ -224,4 +228,16 @@
 
 .thetext{
     padding: .8rem;
+}
+@media (max-width:395px) {
+    .messenger{
+        width: 71% !important;
+        font-size: medium !important;
+    }
+}
+@media (max-width:300px) {
+    .messenger{
+        width: 65% !important;
+
+    }
 }
