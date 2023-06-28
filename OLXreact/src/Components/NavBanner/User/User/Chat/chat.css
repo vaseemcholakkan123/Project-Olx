@@ -200,8 +200,8 @@
         font-size: medium !important;
     }
     .chat-height{
-        height: calc(100vh - 158px);
-        max-height: calc(100vh - 158px) !important;
+        height: calc(100vh - 98px);
+        max-height: calc(100vh - 98px) !important;
     }
     .user-msg{
         margin-right: .4rem;
@@ -210,6 +210,7 @@
         margin-left: .4rem;
     }
     .chat-body{
+        height: 76% !important;
         padding: .4rem;
     }
     .olx-messenger > footer{
