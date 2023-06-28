@@ -200,8 +200,8 @@
         font-size: medium !important;
     }
     .chat-height{
-        height: calc(100vh - 98px);
-        max-height: calc(100vh - 100px) !important;
+        height: calc(100vh - 80px);
+        max-height: calc(100vh - 80px)!important;
     }
     .user-msg{
         margin-right: .4rem;

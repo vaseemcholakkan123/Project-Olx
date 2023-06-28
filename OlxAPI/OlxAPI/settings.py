@@ -32,6 +32,8 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+TIME_ZONE = 'Asia/Kolkata'
+
 
 
 # Application definition
