@@ -48,7 +48,7 @@ class UserLogin(APIView):
             user = authenticate(username=username_data, password=password_data)
             if user:
                 if user.profile:
-                    prof = "https://moddroid.tk/olx-api" + user.profile.url
+                    prof = "https://moddroid.tk" + user.profile.url
                 else:
                     prof = None
                 user_data = {
