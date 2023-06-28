@@ -171,9 +171,9 @@ function ChatView(props:ChatViewProps) {
                         )
                     })
                     :
-                    <div className='w-100 h-100 d-flex a-center mt-5 f-coloumn'>
-                        <img width={125} height={125} src="https://statics.olx.in/external/base/img/emptyChat.png" alt="" />
-                        <p>No chats Found,Chat now by searching one user!</p>
+                    <div className='w-100 h-100 d-flex a-center f-coloumn'>
+                        <img className='mt-4' width={125} height={125} src="https://statics.olx.in/external/base/img/emptyChat.png" alt="" />
+                        <p className='thetext'>No chats Found,Chat now by searching one user!</p>
                     </div>
                 }
 

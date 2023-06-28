@@ -66,8 +66,7 @@ class AdMixin:
         return Response(status=status.HTTP_200_OK)
 
     def perform_destroy(self, instance):
-
-        if instance.posted_user.id != self.request.user : 
+        if instance.posted_user.id != self.request.user.id: 
             return Response(status=status.HTTP_401_UNAUTHORIZED)
             
         return super().perform_destroy(instance)

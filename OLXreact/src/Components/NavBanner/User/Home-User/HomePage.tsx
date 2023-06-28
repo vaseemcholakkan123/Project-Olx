@@ -100,7 +100,15 @@ function HomePage(props:propshome) {
           
               }
 
-        <div className='position-fixed d-md-none' onClick={e=>{url('/Post-Ad')}} style={{bottom:'45px'}}>
+
+        </div>
+
+      </div>
+
+      {
+          localStorage.getItem('logged_user_id') ?
+          
+          <div className='position-fixed d-md-none' onClick={e=>url('/Post-Ad')} style={{bottom:'45px',left:'50%',transform:'translateX(-50%)'}}>
           <div className="sell d-flex d-md-none">
             <svg
               width="104"
@@ -130,12 +138,11 @@ function HomePage(props:propshome) {
             <div className="sell_btn">Sell</div>
           </div>
         </div>
+          
+          
+          : null
+        }
 
-
-
-        </div>
-
-      </div>
     </div>
   )
 }

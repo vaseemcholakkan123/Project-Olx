@@ -30,6 +30,8 @@ function Scooter(props:form_child) {
 
         <div className="m-3 mt-2">
             <select name="cars" id="cars" onChange={e => {props.MaintainForm({...props.product_form,brand:e.target.value})}} className='select-form'>
+            <option>Select</option>
+
             {
                 brands.map(item=>{
                     return(

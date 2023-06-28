@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { userContext } from '../UserApp'
 import CatorBread from '../NavItems/CatorBread'
-import { handleWishlist, handleWishlistDelete } from '../Helper'
+import { NotifyDeletionSuccess, handleWishlist, handleWishlistDelete } from '../Helper'
 import AdCard from '../Home-User/AdCard'
 import { BASE_IMAGE_URL } from '../../../../Config/ConstAPI'
 
@@ -48,6 +48,7 @@ function DetailPage(props:detailpageProps) {
 
 
     useEffect(()=>{
+        
         let category;
         let id;
         if (!props.ad_id && !props.category) {
@@ -74,21 +75,30 @@ function DetailPage(props:detailpageProps) {
         olxAxios.get(`/ads-${category}/?sort_by=-date_created`)
         .then(res=>{
             let lis: Array<ad> = [...res.data]
-            setrelatedAds(lis)
+            setrelatedAds(
+                lis.filter(item=>item.title != DetailAd?.title)
+            )
             
         })
         .catch(err=>{
             NotifyFetchFailure()
         })
 
-    },[DetailAd])
+    },[])
 
 
     function handleDelete(id?:Number){
 
         if (!id) return;
-        olxAxios.delete(`ads-${props.category}/${id}`).then(res=>{
-            console.log(res);
+        let category;
+        category = localStorage.getItem('detail-category')
+
+
+        if (category == 'Properties') category = 'Property';
+        
+        olxAxios.delete(`ads-${category}/${id}/`).then(res=>{
+            NotifyDeletionSuccess()
+            
             url('/')
         })
         .catch(err=>{
@@ -209,7 +219,10 @@ function DetailPage(props:detailpageProps) {
                 } */}
             </div>
 
-            <div className='position-absolute rel-ads border1 w-100 d-none d-lg-block'>
+            {
+                realtedAds.length > 0 ? 
+
+                <div className='position-absolute rel-ads border1 w-100 d-none d-lg-block'>
                 <h4 className='mb-2 p-2'>Related Ads</h4>
 
                 {
@@ -267,6 +280,10 @@ function DetailPage(props:detailpageProps) {
 
             </div>
 
+                :
+                null
+            }
+
         </div>
 
 
@@ -301,7 +318,10 @@ function DetailPage(props:detailpageProps) {
 
             </div>
 
-            <div className="col-12 d-lg-none position-absolute" style={{left:'1rem'}}>
+            {
+                realtedAds.length > 0 ?
+
+                <div className="col-12 d-lg-none position-absolute" style={{left:'1rem'}}>
                 <h4 className='mb-2 p-2'>Related Ads</h4>
 
                 <div className="row gx-1 gy-2">
@@ -358,6 +378,12 @@ function DetailPage(props:detailpageProps) {
                 }
                 </div>
             </div>
+
+                :
+                null
+            }
+
+
         </div>
 
 

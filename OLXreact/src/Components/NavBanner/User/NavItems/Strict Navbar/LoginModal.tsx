@@ -79,12 +79,11 @@ function LoginModal(props:login_create_modal) {
                                     
                                 })
                                 .catch(axiosR=>{
-                                    console.log('error');
-                                    console.log(axiosR);
-
+                                    
                                 })
                                 localStorage.setItem('logged_user',JSON.stringify(res.data.user))
                                 localStorage.setItem('logged_user_id',res.data.user.user_id)
+                                localStorage.setItem('username',res.data.user.username)
                                 props.Logged_in(true)
                              
                             })

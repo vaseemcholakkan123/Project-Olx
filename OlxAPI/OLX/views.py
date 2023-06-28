@@ -111,7 +111,7 @@ class AdminLogin(APIView):
                     )
 
                 if user.profile:
-                    prof = "https://moddroid.tk/olx-api" + user.profile.url
+                    prof = "https://moddroid.tk" + user.profile.url
                 else:
                     prof = None
                 user_data = {

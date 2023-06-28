@@ -67,7 +67,7 @@ function UserApp() {
             profile:res.data.profile ? res.data.profile : null
           })
       })
-      .catch(err=>console.log(err)
+      .catch(err=>{}
       )
 
     }

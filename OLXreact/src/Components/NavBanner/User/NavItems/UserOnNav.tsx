@@ -20,7 +20,8 @@ function UserOnNav() {
         olxAxios.defaults.headers['Authorization'] = null
         url('/')
       }).catch(err=>{
-        alert('Something wrong !')
+        localStorage.clear()
+        window.location.reload()
         
       })
     }
@@ -39,7 +40,7 @@ function UserOnNav() {
           <div className="userPopper">
             <div className="popper-img">
               <figure className='rounded-circle' style={{'width': '50px','margin':0,'marginRight':'7px','backgroundSize':'cover','height': '50px','backgroundImage':userData.profile ? `url("${userData.profile}")` : 'url("https://statics.olx.in/external/base/img/avatar_1.png")'}}></figure>
-              <h4>{userData.username}</h4>
+              <h4>{localStorage.getItem('username')}</h4>
             </div>
             <ul className='user-popper-li'>
               <li>

@@ -56,3 +56,8 @@
     }
     
 }
+@media (max-width:755px) {
+    .category-selection-post-ad-container{
+        margin: .1rem !important;
+    }
+}

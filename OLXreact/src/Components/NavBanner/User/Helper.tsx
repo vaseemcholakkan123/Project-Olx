@@ -58,6 +58,19 @@ const NotifySuccess = () => toast.success("Added to Wishlist",
                           progress: undefined,
                           theme: "light", })
 
+
+    export const NotifyDeletionSuccess = () => toast.success("Ad Deleted !",
+                          { position: "top-right",
+                          autoClose: 1000,
+                          hideProgressBar: true,
+                          closeOnClick: true,
+                          progressStyle:{color:'red'},
+                          pauseOnHover: false,
+                          draggable: true,
+                          progress: undefined,
+                          theme: "light", })
+
+
 const NotifyWishlistDeletion = () => toast.success("Removed from Wishlist",
                           { position: "top-right",
                           autoClose: 1000,
