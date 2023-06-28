@@ -45,6 +45,8 @@ function DetailPage(props:detailpageProps) {
 
     const [DetailAd,SetAd] = useState<ad>()
     const [realtedAds,setrelatedAds] = useState<ad[]>([])
+    const [detailRequested,setdetailRequested] = useState(false)
+    const [relatedrequested,setRelatedRequested] = useState(false)
 
 
     useEffect(()=>{
@@ -63,28 +65,43 @@ function DetailPage(props:detailpageProps) {
         if (props.category == 'Properties') category = 'Property'
 
 
-        olxAxios.get(`ads-${category}/${id}`)
-        .then(res=>{
-            SetAd(res.data)
-        })
-        .catch(err=>{
+       if(!detailRequested){
+            olxAxios.get(`ads-${category}/${id}`)
+            .then(res=>{
+                SetAd(res.data)
+                setdetailRequested(true)
+            })
+            .catch(err=>{
+                
+                NotifyFetchFailure()
+            })
+       }
+
+        if(!relatedrequested){
+                olxAxios.get(`/ads-${category}/?sort_by=-date_created`)
+            .then(res=>{
+                setRelatedRequested(true)
+                let lis: Array<ad> = [...res.data]
+                let now_id:Number|null = localStorage.getItem('detail-id') ? Number(localStorage.getItem('detail-id')) : null
+                setrelatedAds(
+                    lis.filter(item=>{
+                        if (item.id != now_id) return item
+                    })
+                )
+                
+            })
+            .catch(err=>{
+                NotifyFetchFailure()
+            })
+        }
+
+        return(()=>{
+            setRelatedRequested(false)
+            setdetailRequested(false)
             
-            NotifyFetchFailure()
         })
 
-        olxAxios.get(`/ads-${category}/?sort_by=-date_created`)
-        .then(res=>{
-            let lis: Array<ad> = [...res.data]
-            setrelatedAds(
-                lis.filter(item=>item.title != DetailAd?.title)
-            )
-            
-        })
-        .catch(err=>{
-            NotifyFetchFailure()
-        })
-
-    },[])
+    },[DetailAd])
 
 
     function handleDelete(id?:Number){
@@ -222,13 +239,13 @@ function DetailPage(props:detailpageProps) {
             {
                 realtedAds.length > 0 ? 
 
-                <div className='position-absolute rel-ads border1 w-100 d-none d-lg-block'>
+                <div className='rel-ads border1 w-100 d-none d-lg-block' style={{position:'absolute'}}>
                 <h4 className='mb-2 p-2'>Related Ads</h4>
 
                 {
                     realtedAds.map(item=>{
                         return(
-                            <div className="Ad-card col-12 mb-3">
+                            <div key={item.id} className="Ad-card col-12 mb-3">
                                 <div className="Ad-image-container" style={{width:'400px',height:'200px'}}>
 
                                     {
@@ -260,10 +277,10 @@ function DetailPage(props:detailpageProps) {
                                         </button>
                                     }
                                     
-                                    <img src={ BASE_IMAGE_URL + item.related_images[0].image} width={400} height={300} onClick={()=>{ url(`/details/${item.title}`); SetAd(item);localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} />
+                                    <img src={ BASE_IMAGE_URL + item.related_images[0].image} width={400} height={300} onClick={()=>{ url(`/details/${item.title}`); SetAd(item);localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category); window.location.reload() }} />
 
                                 </div>
-                                <div className="Ad-text-container" style={{width:'400px'}} onClick={()=>{ url(`/details/${item.title}`); SetAd(item); localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }}>
+                                <div className="Ad-text-container" style={{width:'400px'}} onClick={()=>{ url(`/details/${item.title}`); SetAd(item); localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category); window.location.reload() }}>
                                     <p className="price-text">
                                     ₹ {item.price}
                                     </p>
@@ -321,14 +338,14 @@ function DetailPage(props:detailpageProps) {
             {
                 realtedAds.length > 0 ?
 
-                <div className="col-12 d-lg-none position-absolute" style={{left:'1rem'}}>
+                <div className="col-12 d-lg-none">
                 <h4 className='mb-2 p-2'>Related Ads</h4>
 
                 <div className="row gx-1 gy-2">
                 {
                     realtedAds.map(item=>{
                         return(
-                            <div className="Ad-card col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                            <div key={item.id} className="Ad-card col-sm-6 col-md-4 col-lg-4 col-xl-3">
                                 <div className="Ad-image-container">
 
                                     {
@@ -360,10 +377,10 @@ function DetailPage(props:detailpageProps) {
                                         </button>
                                     }
                                     
-                                    <img src={ BASE_IMAGE_URL +item.related_images[0].image} width={400} height={300} onClick={()=>{ url(`/details/${item.title}`); SetAd(item);localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }} />
+                                    <img src={ BASE_IMAGE_URL +item.related_images[0].image} width={400} height={300} onClick={()=>{ url(`/details/${item.title}`); SetAd(item);localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category);window.location.reload() }} />
 
                                 </div>
-                                <div className="Ad-text-container" onClick={()=>{ url(`/details/${item.title}`); SetAd(item); localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category) }}>
+                                <div className="Ad-text-container" onClick={()=>{ url(`/details/${item.title}`); SetAd(item); localStorage.setItem('detail-id',String(item.id));localStorage.setItem('detail-category',item.category);window.location.reload() }}>
                                     <p className="price-text">
                                     ₹ {item.price}
                                     </p>
