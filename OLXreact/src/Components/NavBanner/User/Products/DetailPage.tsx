@@ -133,6 +133,7 @@ function DetailPage(props:detailpageProps) {
         {state:
             {'username':DetailAd?.posted_user?.username ,
              'profile' : DetailAd?.posted_user?.profile ,
+             'product' : DetailAd?.title,
               'id' : DetailAd?.posted_user?.id}});
 
 
@@ -145,7 +146,7 @@ function DetailPage(props:detailpageProps) {
   return (
     <>
      <CatorBread context={{category:DetailAd?.category , title : DetailAd?.title}} />
-    <div className='user-home-container mt-3 row'>
+    <div className='paddo user-home-container mt-3 row'>
     
         <div className="d-flex col-12 col-lg-8">
             <div id="carouselExampleFade" className="carousel slide carousel-fade details-corousel" data-bs-ride="carousel">
@@ -305,7 +306,7 @@ function DetailPage(props:detailpageProps) {
 
 
         <div className="mt-2 col-12 col-md-8 col-lg-12">
-            <div className="border1 p-3 col-lg-8 col-12">
+            <div className="border1 p-3 padde col-lg-8 col-12">
                 <h3>Details</h3>
 
                 <div className="m-2">

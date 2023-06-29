@@ -122,7 +122,7 @@ function ChatView(props:ChatViewProps) {
  
     return (
     <div className="user-home-container row no-p chat-container check-p y-hidden">
-        <div className={chatroom ? "col-12 col-md-9 col-lg-4 chat-height dynamic-chat border1-bottom border-no-bottom overflow-y-hidden" : "col-12 col-md-9 col-lg-4 border-no-bottom chat-height border1-bottom overflow-y-hidden"}>
+        <div className={chatroom ? "col-12 col-md-9 col-lg-4 chat-height dynamic-chat borderx overflow-y-hidden" : "col-12 col-md-9 col-lg-4 borderx chat-height overflow-y-hidden"}>
             <div className="border1 p-3 bg-light d-flex a-center">
                 {   searching ?
 
@@ -182,7 +182,7 @@ function ChatView(props:ChatViewProps) {
         </div>
 
 
-        <div className={chatroom ? "col-12 col-md-9 col-lg-7 chat-height" : "col-9 col-lg-7 dynamic-chat chat-height"} >
+        <div className={chatroom ? "col-12 borderx col-md-9 col-lg-7 chat-height" : "col-9 borderx col-lg-7 dynamic-chat chat-height"} >
             <div className={chatroom ? 'border1 border-no-left h-100 chatrooms-holder'  : 'border1 border-no-left p-3 h-100 chatrooms-holder'}>
                {chatroom ? 
                

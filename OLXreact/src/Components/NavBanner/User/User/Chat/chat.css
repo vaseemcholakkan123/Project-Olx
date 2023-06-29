@@ -251,3 +251,8 @@
     max-height: calc(100% - 68px);
 
 }
+
+.borderx{
+    border: 2px solid rgba(14, 4, 5, .2) !important;
+
+}

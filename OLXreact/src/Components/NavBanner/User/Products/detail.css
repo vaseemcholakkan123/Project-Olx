@@ -60,4 +60,13 @@
     .category-selection-post-ad-container{
         margin: .1rem !important;
     }
+    .paddo{
+        padding: 0rem !important;
+    }
+    .border1{
+        border: none;
+    }
+    .padde{
+        padding: .3rem !important;
+    }
 }

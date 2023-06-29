@@ -5,6 +5,7 @@ import { userContext } from '../../UserApp'
 import { NotifyServerFailure, updateTimes } from '../../Helper'
 import olxAxios from '../../../../../Config/AxiosConfig'
 import { BASE_IMAGE_URL } from '../../../../../Config/ConstAPI'
+import { useLocation } from 'react-router-dom'
 
 
 type ChatOneProps = {
@@ -28,6 +29,7 @@ function ChatOne(props:ChatOneProps) {
     const msg = useRef<HTMLInputElement>(null)
     const chatBody = useRef<HTMLDivElement>(null)
     const current_user = useContext(userContext)
+    const RouterState = useLocation()
 
     const [OLXSocket,setSocket] = useState<WebSocket | null>(null)
     
@@ -63,6 +65,7 @@ function ChatOne(props:ChatOneProps) {
         socket.onopen = async event => {
             setSocket(socket)
             console.log('connected');
+
             
         }
         
@@ -151,7 +154,9 @@ function ChatOne(props:ChatOneProps) {
 
         <footer className='bg-light border1-up'>
             <form onSubmit={handleSubmit}>
-                <input ref={msg} name='vaaaal' className='messenger' type="text" placeholder='Enter your message' />
+                <input ref={msg} name='vaaaal' className='messenger' type="text" placeholder='Enter your message' 
+                    value={RouterState.state.product ? RouterState.state.id == props.reciever_id ?  `Hi sir I would like to buy this product :${RouterState.state.product},Shall we talk?` : '' : ''}
+                />
                 <button className='send-btn' type='submit'>
                     Send 
 

@@ -318,6 +318,12 @@ class AddToWishlist(APIView):
         if not item:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
+        
+        is_wishlisted = WishList.objects.filter(user=request.user,content_type=ContentType.objects.get_for_model(item),obj_id=item.id)
+
+        if is_wishlisted.exists():
+            return Response(status=status.HTTP_200_OK)
+        
         WishList.objects.create(user=request.user,Ad=item)
 
         return Response(status=status.HTTP_200_OK)

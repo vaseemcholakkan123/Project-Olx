@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Nav-Cat.css'
 import carimage from './type_car.png'
-import bikeimage from './type_bike.png'
+import bikeimage from './typr_bike.png'
 import propertyimage from './type_property.png'
 import mobileimage from './type_mobile.png'
 import accessoryimage from './type_accessory.png'
