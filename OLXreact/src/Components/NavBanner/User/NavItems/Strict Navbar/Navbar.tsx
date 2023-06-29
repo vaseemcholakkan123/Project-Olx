@@ -82,7 +82,8 @@ function Navbar(props:NavProps) {
             </div>
 
             <p id='lang-text' className='hide-lg'>ENGLISH</p>
-            
+
+
             {
                 
                 !localStorage.getItem('logged_user') ? 

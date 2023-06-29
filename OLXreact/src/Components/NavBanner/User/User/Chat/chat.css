@@ -6,7 +6,7 @@
     border-bottom: solid 1px gray;
 }
 .border-no-bottom{
-    border-bottom: none;
+    border-bottom: none !important;
 }
 .border-no-top{
     border-top: none;
@@ -216,6 +216,11 @@
         padding-top: .3rem;
         padding-bottom: .3rem;
     }
+    .h-f{
+        min-height: calc(100% - 168px) !important;
+        max-height: calc(100% - 168px) !important;
+    
+    }
 }
 .send-btn > svg{
     margin-left: 0.2rem;
@@ -240,4 +245,9 @@
         width: 65% !important;
 
     }
+}
+.h-f{
+    min-height: calc(100% - 68px) ;
+    max-height: calc(100% - 68px);
+
 }

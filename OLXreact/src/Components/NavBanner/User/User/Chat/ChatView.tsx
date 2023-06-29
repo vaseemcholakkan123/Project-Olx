@@ -122,7 +122,7 @@ function ChatView(props:ChatViewProps) {
  
     return (
     <div className="user-home-container row no-p chat-container check-p y-hidden">
-        <div className={chatroom ? "col-12 col-md-9 col-lg-4 chat-height dynamic-chat border1-bottom overflow-y-hidden" : "col-12 col-md-9 col-lg-4 chat-height border1-bottom overflow-y-hidden"}>
+        <div className={chatroom ? "col-12 col-md-9 col-lg-4 chat-height dynamic-chat border1-bottom border-no-bottom overflow-y-hidden" : "col-12 col-md-9 col-lg-4 border-no-bottom chat-height border1-bottom overflow-y-hidden"}>
             <div className="border1 p-3 bg-light d-flex a-center">
                 {   searching ?
 
@@ -144,7 +144,7 @@ function ChatView(props:ChatViewProps) {
 
             </div>
 
-            <div className='p-1 users-holder border1 border-no-top o-scroll' style={{'height':'91%'}}>
+            <div className='p-1 users-holder border1 border-no-top o-scroll h-f' >
                 {/* <p className='ps-2 f-small'>Quick Filters</p>
                 <div className="d-flex p-1 pb-2 ps-3 pe-3">
                     <p onClick={()=>{SelectFilter('All')}}  className={SelectedFilter == 'All' ? 'chat-filter active-item' : 'chat-filter' } >All</p>
@@ -171,7 +171,7 @@ function ChatView(props:ChatViewProps) {
                         )
                     })
                     :
-                    <div className='w-100 h-100 d-flex a-center f-coloumn'>
+                    <div className='w-100 h-90 d-flex a-center f-coloumn'>
                         <img className='mt-4' width={125} height={125} src="https://statics.olx.in/external/base/img/emptyChat.png" alt="" />
                         <p className='thetext'>No chats Found,Chat now by searching one user!</p>
                     </div>
